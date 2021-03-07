@@ -1,0 +1,11 @@
+---
+out_dir: "./"
+fastqc_dir: "fastqc/"
+kmer_dir: "kmer/"
+alignment_dir: "alignment/"
+snpcall_dir: "snpcall/"
+log_dir: "logs/"
+error_dir: "errors/"
+benchmark_dir: "benchmarks/"
+#reference:
+

@@ -1,0 +1,6 @@
+---
+#template:
+#  account: account,
+#  time: "00:15:00",
+#  n: 1,
+#  partition : core

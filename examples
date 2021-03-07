@@ -1,0 +1,1 @@
+snakemake --config samples=["NA12889","NA12890","NA12877"] sample_dir="/project/grigorenko/data/illumina_platinum/"
