@@ -10,6 +10,7 @@ dependencies:
   - bwa>=0.7.17
   - samtools>=1.10
   - mosdepth>=0.3.1
+  - gatk4>=4.2.0.0
 #---- Cluster config ---
 #template:
 #  account: account,
