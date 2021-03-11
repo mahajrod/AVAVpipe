@@ -11,6 +11,11 @@ rule fastqc_filtered:
         "%s/{sample_id}/fastqc_filtered.benchmark.txt" % benchmark_dir
     conda:
         config["conda_config"]
+    resources:
+        cpus=config["fastqc_threads"],
+        time=config["fastqc_time"],
+        mem=config["fastqc_mem_mb"],
+        slurm_log="%s/{sample_id}/fastqc_filtered.slurm.log" % log_dir
     threads:
         config["fastqc_threads"]
     shell:

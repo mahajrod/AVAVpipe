@@ -19,6 +19,11 @@ rule trimmomatic:
         "%s/{sample_id}/trimmomatic.benchmark.txt" % benchmark_dir
     conda:
         config["conda_config"]
+    resources:
+        cpus=config["trimmomatic_threads"],
+        time=config["trimmomatic_time"],
+        mem=config["trimmomatic_mem_mb"],
+        slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir
     threads:
         config["trimmomatic_threads"]
     shell:

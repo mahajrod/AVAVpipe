@@ -10,6 +10,11 @@ rule mosdepth:
         "%s/{sample_id}/mosdepth.log" % log_dir
     benchmark:
         "%s/{sample_id}/mosdepth.benchmark.txt" % benchmark_dir
+    resources:
+        cpus=config["mosdepth_threads"],
+        time=config["mosdepth_time"],
+        mem=config["mosdepth_mem_mb"],
+        slurm_log="%s/{sample_id}/mosdepth.slurm.log" % log_dir
     threads: config["mosdepth_threads"]
     shell:
         "mosdepth -t {threads} --mapq {params.min_mapping_quality} {params.output_pefix} {input}"

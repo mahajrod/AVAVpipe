@@ -14,14 +14,27 @@ conda_config: "envs/conda.yaml"
 # tune alignment threads
 fastqc_threads: 2
 trimmomatic_threads: 10
-bwa_threads: 10
+bwa_threads: 20
 sort_threads: 5
 markdup_threads: 1
 fixmate_threads: 1
 index_threads: 5
 mosdepth_threads: 10
-#---- Tool memory ----
-per_thread_sort_mem: 1G # adjust on cluster !!!!lowered for testing
+#---- Tool memory ---- #TODO: adjust memory requirements
+fastqc_mem_mb: 10000
+trimmomatic_mem_mb: 10000
+mosdepth_mem_mb: 4000 #The amount of memory is approximately equal to 32-bits * longest chrom length, so for the 249MB chromosome 1, it will require 1GB of memory.
+index_mem_mb: 10000
+bwa_mem_mb: 20000
+fixmate_mem_mb: 5000
+markdup_mem_mb: 5000
+per_thread_sort_mem: 10 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
+#---- Tool time ----
+fastqc_time: "04:00:00"
+trimmomatic_time: "10:00:00"
+mosdepth_time: "10:00:00"
+index_time: "10:00:00"
+map_time: "48:00:00"
 #---- Tool variables ----
 trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
 reference:              #SET!!!!!!!!!!
