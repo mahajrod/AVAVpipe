@@ -1,11 +1,34 @@
----
+#---- Directory structure config ----
+sample_dir: "samples/"
 out_dir: "./"
 fastqc_dir: "fastqc/"
+filtered_read_dir: "reads/filtered/"
 kmer_dir: "kmer/"
 alignment_dir: "alignment/"
 snpcall_dir: "snpcall/"
 log_dir: "logs/"
 error_dir: "errors/"
 benchmark_dir: "benchmarks/"
-#reference:
-
+conda_config: "envs/conda.yaml"
+#---- Tool threads ----
+# tune alignment threads
+fastqc_threads: 2
+trimmomatic_threads: 10
+bwa_threads: 10
+sort_threads: 5
+markdup_threads: 1
+fixmate_threads: 1
+index_threads: 5
+mosdepth_threads: 10
+#---- Tool memory ----
+per_thread_sort_mem: 1G # adjust on cluster !!!!lowered for testing
+#---- Tool variables ----
+trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
+reference:              #SET!!!!!!!!!!
+mosdpth_min_mapping_quality: 20
+#---- Cluster config ----
+#template:
+#  account: account,
+#  time: "00:15:00",
+#  n: 1,
+#  partition : core

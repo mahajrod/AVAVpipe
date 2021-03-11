@@ -1,9 +1,0 @@
-channels:
-  - bioconda
-  - conda-forge
-dependencies:
-  - fastqc >=0.11.8
-  - trimmomatic >=0.36
-  - jellyfish >=2.2.3
-  - bwa >=0.7.17
-  - samtools >=1.10

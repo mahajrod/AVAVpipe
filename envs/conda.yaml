@@ -1,0 +1,18 @@
+#---- Bioconda config ----
+name: avavpipe
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - fastqc>=0.11
+  - trimmomatic>=0.39
+  - jellyfish=2.2.3
+  - bwa>=0.7.17
+  - samtools>=1.10
+  - mosdepth>=0.3.1
+#---- Cluster config ---
+#template:
+#  account: account,
+#  time: "00:15:00",
+#  n: 1,
+#  partition : core
