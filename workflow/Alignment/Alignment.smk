@@ -1,11 +1,12 @@
 rule bwa_map:
     input:
         forward_reads=rules.trimmomatic.output.pe_forward, #"%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir,
-        reverse_reads=rules.trimmomatic.output.pe_reverse#"%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir
+        reverse_reads=rules.trimmomatic.output.pe_reverse,#"%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir
+        reference=config["reference"]
     output:
         "%s/{sample_id}/{sample_id}.sorted.bam" % alignment_dir
     params:
-        reference=config["reference"],
+
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
         markdup_threads=config["markdup_threads"],
@@ -25,7 +26,7 @@ rule bwa_map:
         slurm_log="%s/{sample_id}/map.slurm.log" % log_dir
     threads: config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"]
     shell:
-        "bwa mem  -t {params.bwa_threads} {params.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
+        "bwa mem  -t {params.bwa_threads} {input.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
         "-R  \'@RG\\tID:{wildcards.sample_id}\\tPU:x\\tSM:{wildcards.sample_id}\\tPL:Illumina\\tLB:x\' 2>{log.bwa} | "
         "samtools fixmate -@ {params.fixmate_threads} -m - -  2>{log.fixmate}| "
         "samtools sort -@ {params.sort_threads} -m {params.per_thread_sort_mem} 2>{log.sort}| "

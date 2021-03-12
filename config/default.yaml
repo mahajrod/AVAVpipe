@@ -20,6 +20,8 @@ markdup_threads: 1
 fixmate_threads: 1
 index_threads: 5
 mosdepth_threads: 10
+baserecalibrator_threads: 1
+applybsqr_threads: 1
 #---- Tool memory ---- #TODO: adjust memory requirements
 fastqc_mem_mb: 10000
 trimmomatic_mem_mb: 10000
@@ -29,12 +31,16 @@ bwa_mem_mb: 20000
 fixmate_mem_mb: 5000
 markdup_mem_mb: 5000
 per_thread_sort_mem: 10 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
+baserecalibrator_mem_mb:  # TODO: add
+applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
 fastqc_time: "04:00:00"
 trimmomatic_time: "10:00:00"
 mosdepth_time: "10:00:00"
 index_time: "10:00:00"
 map_time: "48:00:00"
+baserecalibrator_time: "24:00:00"
+applybsqr_time: "24:00:00"
 #---- Tool variables ----
 trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
 reference:              #SET!!!!!!!!!!

@@ -25,9 +25,9 @@ rule all:
     input:
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.sorted.bam" % alignment_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.sorted.bam" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.sorted.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"])
         #expand("%s/{sample_id}/" % fastqc_dir, sample_id=config["sample_list"]),
@@ -41,4 +41,6 @@ include: "workflow/QCFiltering/Trimmomatic.smk"
 include: "workflow/QCFiltering/FastQC_filtered.smk"
 include: "workflow/Alignment/Alignment.smk"
 include: "workflow/Alignment/Coverage.smk"
+include: "workflow/VariantCall/BSQR.smk"
+#include: "workflow/VariantCall/Genotyping.smk"
 
