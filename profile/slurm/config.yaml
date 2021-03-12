@@ -1,8 +1,5 @@
-jobs: 10
+jobs: 100
 use-conda: true
 cluster:
-  "sbatch -t {resources.time}
-  --mem={resources.mem}
-  -c {resources.cpus}
-  -o logs_slurm/{rule}_{wildcards}
-  -e logs_slurm/{rule}_{wildcards}"
+  "sbatch -t {resources.time} --mem={resources.mem} -c {resources.cpus} "
+  "-o logs_slurm/{rule}_{wildcards} -e logs_slurm/{rule}_{wildcards}"
