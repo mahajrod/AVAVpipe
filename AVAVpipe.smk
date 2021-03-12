@@ -41,6 +41,6 @@ include: "workflow/QCFiltering/Trimmomatic.smk"
 include: "workflow/QCFiltering/FastQC_filtered.smk"
 include: "workflow/Alignment/Alignment.smk"
 include: "workflow/Alignment/Coverage.smk"
-include: "workflow/VariantCall/BSQR.smk"
+#include: "workflow/VariantCall/BSQR.smk"
 #include: "workflow/VariantCall/Genotyping.smk"
 
