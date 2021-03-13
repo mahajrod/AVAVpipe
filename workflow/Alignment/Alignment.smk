@@ -5,7 +5,7 @@ rule bwa_map:
         reference=config["reference"]
     output:
         bam="%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir,
-        tmp_prefix="%s/{sample_id}/{sample_id}" % alignment_dir
+        #tmp_prefix="%s/{sample_id}/{sample_id}" % alignment_dir
     params:
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
@@ -32,7 +32,7 @@ rule bwa_map:
         "bwa mem  -t {params.bwa_threads} {input.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
         "-R  \'@RG\\tID:{wildcards.sample_id}\\tPU:x\\tSM:{wildcards.sample_id}\\tPL:Illumina\\tLB:x\' 2>{log.bwa} | "
         "samtools fixmate -@ {params.fixmate_threads} -m - -  2>{log.fixmate}| "
-        "samtools sort -T {output.tmp_prefix} -@ {params.sort_threads} -m {params.per_thread_sort_mem} 2>{log.sort}| "
+        "samtools sort -@ {params.sort_threads} -m {params.per_thread_sort_mem} 2>{log.sort}| "
         "samtools markdup -@ {params.markdup_threads} - {output.bam} 2>{log.markdup}"
 
 rule index_bam:
