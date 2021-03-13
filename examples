@@ -1,6 +1,1 @@
-snakemake --config samples=["NA12889","NA12890","NA12877"] sample_dir="/project/grigorenko/data/illumina_platinum/"
-
-
-
-snakemake --snakefile ~/Dropbox/AVAVpipe/AVAVpipe.snakefile --cores 1 --configfile ~/Dropbox/AVAVpipe/config/default.yaml --config "sample_dir"="samples" "conda_config"="~/Dropbox/AVAVpipe/config/conda.yaml" --use-conda
-
+snakemake --snakefile AVAVpipe.smk --profile profile/slurm/ --configfile config/default.yaml --config sample_dir=/project/grigorenko/data/illumina_platinum/ trimmomatic_adapters=/project/grigorenko/soft/Trimmomatic-0.39/adapters/TruSeq2-PE.fa reference=/project/grigorenko/reference/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna --use-conda --printshellcmds

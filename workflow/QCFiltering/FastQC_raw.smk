@@ -5,7 +5,7 @@ rule fastqc_raw:
     output:
         directory("%s/{sample_id}/raw/" % fastqc_dir)
     params:
-        kmer=10
+        kmer=7
     log:
         std="%s/{sample_id}/fastqc_raw.log" % log_dir,
         cluster_log="%s/{sample_id}.fastqc_raw.cluster.log" % config["cluster_log_dir"],

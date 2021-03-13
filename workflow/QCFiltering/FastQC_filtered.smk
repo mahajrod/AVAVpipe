@@ -4,7 +4,7 @@ rule fastqc_filtered:
     output:
         directory("%s/{sample_id}/filtered/" % fastqc_dir)
     params:
-        kmer=10
+        kmer=7
     log:
         std="%s/{sample_id}/fastqc_filtered.log" % log_dir,
         cluster_log="%s/{sample_id}.fastqc_filtered.cluster.log" % config["cluster_log_dir"],
