@@ -19,8 +19,8 @@ rule trimmomatic:
         cluster_err="%s/{sample_id}.trimmomatic.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/trimmomatic.benchmark.txt" % benchmark_dir
-    conda:
-        config["conda_config"]
+    #conda:
+    #    "../%s" % config["conda_config"]
     resources:
         cpus=config["trimmomatic_threads"],
         time=config["trimmomatic_time"],

@@ -11,8 +11,8 @@ rule fastqc_filtered:
         cluster_err="%s/{sample_id}.fastqc_filtered.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/fastqc_filtered.benchmark.txt" % benchmark_dir
-    conda:
-        config["conda_config"]
+    #conda:
+    #    "../%s" % config["conda_config"]
     resources:
         cpus=config["fastqc_threads"],
         time=config["fastqc_time"],
