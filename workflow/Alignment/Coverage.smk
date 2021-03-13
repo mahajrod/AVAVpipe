@@ -1,6 +1,6 @@
 rule mosdepth:
     input:
-        rules.bwa_map.output
+        rules.bwa_map.output.bam
     output:
         "%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir
     params:
@@ -20,6 +20,6 @@ rule mosdepth:
         mem=config["mosdepth_mem_mb"],
     threads: config["mosdepth_threads"]
     shell:
-        "mosdepth -t {threads} --mapq {params.min_mapping_quality} {params.output_pefix} {input.std} > {log} 2>&1"
+        "mosdepth -t {threads} --mapq {params.min_mapping_quality} {params.output_pefix} {input} > {log.std} 2>&1"
 
 

@@ -1,6 +1,6 @@
 rule baserecalibrator:
     input:
-        bam=rules.bwa_map.output,
+        bam=rules.bwa_map.output.bam,
         reference=config["reference"],
         known_sites_vcf_list=expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"])
     output:
@@ -23,7 +23,7 @@ rule baserecalibrator:
 
 rule applybsqr:
     input:
-        bam=rules.bwa_map.output,
+        bam=rules.bwa_map.output.bam,
         reference=config["reference"],
         table=rules.baserecalibrator.output
     output:
