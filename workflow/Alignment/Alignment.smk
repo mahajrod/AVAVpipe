@@ -23,7 +23,8 @@ rule bwa_map:
         cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"],
         time=config["map_time"],
         mem=config["per_thread_sort_mem"] * config["sort_threads"] * 1024 + config["bwa_mem_mb"] + config["fixmate_mem_mb"] + config["markdup_mem_mb"],
-        slurm_log="%s/{sample_id}/map.slurm.log" % log_dir
+        slurm_log="%s/{sample_id}/map.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/map.slurm.err" % log_dir
     threads: config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"]
     shell:
         "bwa mem  -t {params.bwa_threads} {input.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
@@ -45,7 +46,8 @@ rule index_bam:
         cpus=config["index_threads"],
         time=config["index_time"],
         mem=config["index_mem_mb"],
-        slurm_log="%s/{sample_id}/index.slurm.log" % log_dir
+        slurm_log="%s/{sample_id}/index.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/index.slurm.err" % log_dir
     threads: config["index_threads"]
     shell:
         "samtools index -@ {threads} {input}"

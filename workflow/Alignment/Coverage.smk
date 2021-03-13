@@ -14,7 +14,8 @@ rule mosdepth:
         cpus=config["mosdepth_threads"],
         time=config["mosdepth_time"],
         mem=config["mosdepth_mem_mb"],
-        slurm_log="%s/{sample_id}/mosdepth.slurm.log" % log_dir
+        slurm_log="%s/{sample_id}/mosdepth.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/mosdepth.slurm.err" % log_dir
     threads: config["mosdepth_threads"]
     shell:
         "mosdepth -t {threads} --mapq {params.min_mapping_quality} {params.output_pefix} {input}"

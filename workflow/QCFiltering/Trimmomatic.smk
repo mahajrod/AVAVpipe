@@ -23,7 +23,8 @@ rule trimmomatic:
         cpus=config["trimmomatic_threads"],
         time=config["trimmomatic_time"],
         mem=config["trimmomatic_mem_mb"],
-        slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir
+        slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/trimmomatic.slurm.err" % log_dir
     threads:
         config["trimmomatic_threads"]
     shell:
