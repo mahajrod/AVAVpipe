@@ -32,8 +32,6 @@ rule all:
         expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"])
         #expand("%s/{sample_id}/" % fastqc_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/" % fastqc_dir, sample_id=config["sample_list"])
-    conda:
-        config["conda_config"]
 
 include: "workflow/QCFiltering/FastQC_raw.smk"
 include: "workflow/QCFiltering/Trimmomatic.smk"
