@@ -20,6 +20,8 @@ rule bwa_map:
         cluster_err="%s/{sample_id}.map.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/alignment.benchmark.txt" % benchmark_dir
+    #conda:
+    #    "../../%s" % config["conda_config"]
     resources:
         cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"],
         time=config["map_time"],
@@ -43,6 +45,8 @@ rule index_bam:
         cluster_err="%s/{sample_id}.index.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/index.benchmark.txt" % benchmark_dir
+    #conda:
+    #    "../../%s" % config["conda_config"]
     resources:
         cpus=config["index_threads"],
         time=config["index_time"],

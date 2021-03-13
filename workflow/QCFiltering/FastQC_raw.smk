@@ -13,7 +13,7 @@ rule fastqc_raw:
     benchmark:
         "%s/{sample_id}/fastqc_raw.benchmark.txt" % benchmark_dir
     #conda:
-    #    "../%s" % config["conda_config"]
+    #    "../../%s" % config["conda_config"]
     resources:
         cpus=config["fastqc_threads"],
         time=config["fastqc_time"],

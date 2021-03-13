@@ -11,6 +11,8 @@ rule baserecalibrator:
         cluster_err="%s/{sample_id}.baserecalibrator.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/baserecalibrator.benchmark.txt" % benchmark_dir
+    #conda:
+    #    "../../%s" % config["conda_config"]
     resources:
         cpus=config["baserecalibrator_threads"],
         time=config["baserecalibrator_time"],
@@ -32,6 +34,8 @@ rule applybsqr:
         cluster_err="%s/{sample_id}.applybsqr.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/applybsqr.benchmark.txt" % benchmark_dir
+    #conda:
+    #    "../../%s" % config["conda_config"]
     resources:
         cpus=config["applybsqr_threads"],
         time=config["applybsqr_time"],
