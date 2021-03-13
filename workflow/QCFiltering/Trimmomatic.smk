@@ -14,7 +14,9 @@ rule trimmomatic:
         window_quality=20,
         minlength=50
     log:
-        "%s/{sample_id}/trimmomatic.log" % log_dir
+        std="%s/{sample_id}/trimmomatic.log" % log_dir,
+        slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/trimmomatic.slurm.err" % log_dir
     benchmark:
         "%s/{sample_id}/trimmomatic.benchmark.txt" % benchmark_dir
     conda:
@@ -23,12 +25,10 @@ rule trimmomatic:
         cpus=config["trimmomatic_threads"],
         time=config["trimmomatic_time"],
         mem=config["trimmomatic_mem_mb"],
-        slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/trimmomatic.slurm.err" % log_dir
     threads:
         config["trimmomatic_threads"]
     shell:
          "trimmomatic PE -threads {threads} -phred33 {input} {output} "
          "ILLUMINACLIP:{params.adapters}:{params.illumina_clip} "
          "SLIDINGWINDOW:{params.window_size}:{params.window_quality} "
-         "MINLEN:{params.minlength} > {log} 2>&1"
+         "MINLEN:{params.minlength} > {log.std} 2>&1"

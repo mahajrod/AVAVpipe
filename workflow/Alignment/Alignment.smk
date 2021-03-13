@@ -15,15 +15,16 @@ rule bwa_map:
         bwa="%s/{sample_id}/bwa.log" % log_dir,
         fixmate="%s/{sample_id}/fixmate.log" % log_dir,
         sort="%s/{sample_id}/sort.log" % log_dir,
-        markdup="%s/{sample_id}/markdup.log" % log_dir
+        markdup="%s/{sample_id}/markdup.log" % log_dir,
+        slurm_log="%s/{sample_id}/map.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/map.slurm.err" % log_dir
     benchmark:
         "%s/{sample_id}/alignment.benchmark.txt" % benchmark_dir
     resources:
         cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"],
         time=config["map_time"],
         mem=config["per_thread_sort_mem"] * config["sort_threads"] * 1024 + config["bwa_mem_mb"] + config["fixmate_mem_mb"] + config["markdup_mem_mb"],
-        slurm_log="%s/{sample_id}/map.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/map.slurm.err" % log_dir
+
     threads: config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"]
     shell:
         "bwa mem  -t {params.bwa_threads} {input.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
@@ -38,16 +39,17 @@ rule index_bam:
     output:
         "%s/{sample_id}/{sample_id}.sorted.bam.bai" % alignment_dir
     log:
-        "%s/{sample_id}/index.log" % log_dir
+        std="%s/{sample_id}/index.log" % log_dir,
+        slurm_log="%s/{sample_id}/index.slurm.log" % log_dir,
+        slurm_err="%s/{sample_id}/index.slurm.err" % log_dir
     benchmark:
         "%s/{sample_id}/index.benchmark.txt" % benchmark_dir
     resources:
         cpus=config["index_threads"],
         time=config["index_time"],
         mem=config["index_mem_mb"],
-        slurm_log="%s/{sample_id}/index.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/index.slurm.err" % log_dir
+
     threads: config["index_threads"]
     shell:
-        "samtools index -@ {threads} {input}"
+        "samtools index -@ {threads} {input} > {log.std} 2>&1"
 
