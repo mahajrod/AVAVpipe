@@ -6,7 +6,6 @@ rule bwa_map:
     output:
         "%s/{sample_id}/{sample_id}.sorted.bam" % alignment_dir
     params:
-
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
         markdup_threads=config["markdup_threads"],
