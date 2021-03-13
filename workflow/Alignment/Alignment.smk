@@ -24,7 +24,7 @@ rule bwa_map:
     conda:
         "../../%s" % config["conda_config"]
     resources:
-        cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"],
+        cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"] + 1,
         time=config["map_time"],
         mem=config["per_thread_sort_mem"] * config["sort_threads"] * 1024 + config["bwa_mem_mb"] + config["fixmate_mem_mb"] + config["markdup_mem_mb"]
     threads: config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"]
