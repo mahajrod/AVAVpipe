@@ -12,8 +12,8 @@ rule mosdepth:
         cluster_err="%s/{sample_id}.mosdepth.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/mosdepth.benchmark.txt" % benchmark_dir
-    #conda:
-    #    "../../%s" % config["conda_config"]
+    conda:
+        "../../%s" % config["conda_config"]
     resources:
         cpus=config["mosdepth_threads"],
         time=config["mosdepth_time"],
