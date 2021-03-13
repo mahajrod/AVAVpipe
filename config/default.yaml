@@ -31,7 +31,7 @@ index_mem_mb: 10000
 bwa_mem_mb: 20000
 fixmate_mem_mb: 5000
 markdup_mem_mb: 5000
-per_thread_sort_mem: 10 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
+per_thread_sort_mem: 20 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
 baserecalibrator_mem_mb:  # TODO: add
 applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
