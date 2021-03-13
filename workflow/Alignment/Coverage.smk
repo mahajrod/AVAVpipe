@@ -8,8 +8,8 @@ rule mosdepth:
         output_pefix="%s/{sample_id}/{sample_id}.coverage" % alignment_dir
     log:
         std="%s/{sample_id}/mosdepth.log" % log_dir,
-        slurm_log="%s/{sample_id}/mosdepth.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/mosdepth.slurm.err" % log_dir
+        cluster_log="%s/{sample_id}.mosdepth.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.mosdepth.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/mosdepth.benchmark.txt" % benchmark_dir
     resources:

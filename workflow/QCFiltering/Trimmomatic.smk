@@ -15,10 +15,8 @@ rule trimmomatic:
         minlength=50
     log:
         std="%s/{sample_id}/trimmomatic.log" % log_dir,
-        slurm_log="{sample_id}_trimmomatic.slurm.log",
-        slurm_err="{sample_id}_trimmomatic.slurm.err"
-        #slurm_log="%s/{sample_id}/trimmomatic.slurm.log" % log_dir,
-        #slurm_err="%s/{sample_id}/trimmomatic.slurm.err" % log_dir
+        cluster_log="%s/{sample_id}.trimmomatic.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.trimmomatic.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/trimmomatic.benchmark.txt" % benchmark_dir
     conda:

@@ -34,7 +34,7 @@ rule all:
         #expand("%s/{sample_id}/" % fastqc_dir, sample_id=config["sample_list"])
     conda:
         config["conda_config"]
-    shell: "echo %s > fgfhfh" % (str(config["sample_list"] ))
+    shell: "echo FINISHED!"
 
 include: "workflow/QCFiltering/FastQC_raw.smk"
 include: "workflow/QCFiltering/Trimmomatic.smk"

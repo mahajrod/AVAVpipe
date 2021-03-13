@@ -16,15 +16,14 @@ rule bwa_map:
         fixmate="%s/{sample_id}/fixmate.log" % log_dir,
         sort="%s/{sample_id}/sort.log" % log_dir,
         markdup="%s/{sample_id}/markdup.log" % log_dir,
-        slurm_log="%s/{sample_id}/map.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/map.slurm.err" % log_dir
+        cluster_log="%s/{sample_id}.map.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.map.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/alignment.benchmark.txt" % benchmark_dir
     resources:
         cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"],
         time=config["map_time"],
-        mem=config["per_thread_sort_mem"] * config["sort_threads"] * 1024 + config["bwa_mem_mb"] + config["fixmate_mem_mb"] + config["markdup_mem_mb"],
-
+        mem=config["per_thread_sort_mem"] * config["sort_threads"] * 1024 + config["bwa_mem_mb"] + config["fixmate_mem_mb"] + config["markdup_mem_mb"]
     threads: config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"]
     shell:
         "bwa mem  -t {params.bwa_threads} {input.reference} <(gunzip -c {input.forward_reads}) <(gunzip -c {input.reverse_reads}) "
@@ -40,15 +39,14 @@ rule index_bam:
         "%s/{sample_id}/{sample_id}.sorted.bam.bai" % alignment_dir
     log:
         std="%s/{sample_id}/index.log" % log_dir,
-        slurm_log="%s/{sample_id}/index.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/index.slurm.err" % log_dir
+        cluster_log="%s/{sample_id}.index.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.index.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/index.benchmark.txt" % benchmark_dir
     resources:
         cpus=config["index_threads"],
         time=config["index_time"],
         mem=config["index_mem_mb"],
-
     threads: config["index_threads"]
     shell:
         "samtools index -@ {threads} {input} > {log.std} 2>&1"

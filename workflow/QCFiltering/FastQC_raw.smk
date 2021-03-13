@@ -8,8 +8,8 @@ rule fastqc_raw:
         kmer=10
     log:
         std="%s/{sample_id}/fastqc_raw.log" % log_dir,
-        slurm_log="%s/{sample_id}/fastqc_raw.slurm.log" % log_dir,
-        slurm_err="%s/{sample_id}/fastqc_raw.slurm.err" % log_dir
+        cluster_log="%s/{sample_id}.fastqc_raw.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.fastqc_raw.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/{sample_id}/fastqc_raw.benchmark.txt" % benchmark_dir
     conda:
