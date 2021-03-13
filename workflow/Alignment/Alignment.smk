@@ -5,7 +5,7 @@ rule bwa_map:
         reference=config["reference"]
     output:
         bam="%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir,
-        #tmp_prefix="%s/{sample_id}/{sample_id}" % alignment_dir
+        tmp_prefix="%s/{sample_id}/{sample_id}" % alignment_dir
     params:
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
