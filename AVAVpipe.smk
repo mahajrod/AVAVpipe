@@ -3,14 +3,14 @@ import os
 #conda: "%s/config/conda.yaml" % __file__
 #configfile: "%s/config/default.yaml" % __file__
 
-fastqc_dir = "{0}/{1}".format(config["out_dir"], config["fastqc_dir"]).replace("//", "/")
-kmer_dir = "{0}/{1}".format(config["out_dir"], config["kmer_dir"]).replace("//", "/")
-filtered_read_dir = "{0}/{1}".format(config["out_dir"], config["filtered_read_dir"]).replace("//", "/")
-alignment_dir = "{0}/{1}".format(config["out_dir"], config["alignment_dir"]).replace("//", "/")
-snpcall_dir = "{0}/{1}".format(config["out_dir"], config["snpcall_dir"]).replace("//", "/")
-log_dir = "{0}/{1}".format(config["out_dir"], config["log_dir"]).replace("//", "/")
-error_dir  = "{0}/{1}".format(config["out_dir"], config["error_dir"]).replace("//", "/")
-benchmark_dir =  "{0}/{1}".format(config["out_dir"], config["benchmark_dir"]).replace("//", "/")
+fastqc_dir = "{0}/{1}".format(config["out_dir"], config["fastqc_dir"])
+kmer_dir = "{0}/{1}".format(config["out_dir"], config["kmer_dir"])
+filtered_read_dir = "{0}/{1}".format(config["out_dir"], config["filtered_read_dir"])
+alignment_dir = "{0}/{1}".format(config["out_dir"], config["alignment_dir"])
+snpcall_dir = "{0}/{1}".format(config["out_dir"], config["snpcall_dir"])
+log_dir = "{0}/{1}".format(config["out_dir"], config["log_dir"])
+error_dir  = "{0}/{1}".format(config["out_dir"], config["error_dir"])
+benchmark_dir =  "{0}/{1}".format(config["out_dir"], config["benchmark_dir"])
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
