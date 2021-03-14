@@ -5,6 +5,8 @@ rule ref_faidx:
         "%s.fai" % config["reference"]
     log:
         std="%s/faidx.log" % log_dir,
+        cluster_log="%s/faidx.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/faidx.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/faidx.benchmark.txt" % benchmark_dir
     conda:
@@ -16,7 +18,7 @@ rule ref_faidx:
     threads:
         config["faidx_threads"]
     shell:
-         "samtools faidx {input}"
+         "samtools faidx {input} > {log.std} 2>&1"
 
 rule ref_dict:
     input:
@@ -25,6 +27,8 @@ rule ref_dict:
         "%s.dict" % (os.path.splitext(config["reference"])[0])
     log:
         std="%s/dict.log" % log_dir,
+        cluster_log="%s/dict.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/dict.cluster.err" % config["cluster_log_dir"]
     benchmark:
         "%s/dict.benchmark.txt" % benchmark_dir
     conda:
@@ -36,4 +40,4 @@ rule ref_dict:
     threads:
         config["dict_threads"]
     shell:
-         "picard CreateSequenceDictionary -R {input}"
+         "picard CreateSequenceDictionary -R {input} > {log.std} 2>&1"
