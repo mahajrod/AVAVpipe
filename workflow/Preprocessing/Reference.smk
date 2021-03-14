@@ -22,7 +22,7 @@ rule ref_dict:
     input:
         config["reference"]
     output:
-        "%s.dict" % (os.path.splitext(config["reference"]))
+        "%s.dict" % (os.path.splitext(config["reference"])[0])
     log:
         std="%s/dict.log" % log_dir,
     benchmark:
