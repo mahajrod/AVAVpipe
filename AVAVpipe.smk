@@ -25,8 +25,8 @@ localrules: all
 
 rule all:
     input:
-        "%s.fai" % (config["reference"]),
-        "%s.dict" % (os.path.splitext(config["reference"])),
+        "{0}.fai".format(config["reference"]),
+        "{0}.dict".format(os.path.splitext(config["reference"])),
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
