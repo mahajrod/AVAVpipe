@@ -23,10 +23,14 @@ index_threads: 5
 mosdepth_threads: 10
 baserecalibrator_threads: 1
 applybsqr_threads: 1
+jellyfish_count_threads: 26
+jellyfish_histo_threads: 10
 #---- Tool memory ---- #TODO: adjust memory requirements
-fastqc_mem_mb: 10000
+fastqc_mem_mb: 2000
 trimmomatic_mem_mb: 10000
 mosdepth_mem_mb: 4000 #The amount of memory is approximately equal to 32-bits * longest chrom length, so for the 249MB chromosome 1, it will require 1GB of memory.
+jellyfish_count_mem_mb: 189440 # 185 Gb
+jellyfish_histo_mem_mb: 10240 # 10Gb
 index_mem_mb: 10000
 bwa_mem_mb: 10000
 fixmate_mem_mb: 5000
@@ -42,10 +46,13 @@ index_time: "10:00:00"
 map_time: "48:00:00"
 baserecalibrator_time: "24:00:00"
 applybsqr_time: "24:00:00"
+jellyfish_count_time: "48:00:00"
+jellyfish_histo_time: "10:00:00"
 #---- Tool variables ----
 trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
 reference:              #SET!!!!!!!!!!
 mosdpth_min_mapping_quality: 20
+jellyfish_kmer_length: 23
 #---- Cluster config ----
 #template:
 #  account: account,

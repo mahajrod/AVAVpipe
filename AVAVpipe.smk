@@ -31,14 +31,16 @@ rule all:
         #expand("%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"])
+        expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
+        rules.jellyfish_histo.output
 
 
 include: "workflow/QCFiltering/FastQC_raw.smk"
 include: "workflow/QCFiltering/Trimmomatic.smk"
 include: "workflow/QCFiltering/FastQC_filtered.smk"
-include: "workflow/Alignment/Alignment.smk"
-include: "workflow/Alignment/Coverage.smk"
+include: "workflow/QCFiltering/Kmer.smk"
+#include: "workflow/Alignment/Alignment.smk"
+#include: "workflow/Alignment/Coverage.smk"
 #include: "workflow/VariantCall/BSQR.smk"
 #include: "workflow/VariantCall/Genotyping.smk"
 
