@@ -13,6 +13,8 @@ benchmark_dir: "benchmarks"
 conda_config: "envs/conda.yaml"
 #---- Tool threads ----
 # tune alignment threads
+faidx_threads: 1
+dict_threads: 1
 fastqc_threads: 2
 trimmomatic_threads: 10
 bwa_threads: 19
@@ -26,6 +28,8 @@ applybsqr_threads: 1
 jellyfish_count_threads: 26
 jellyfish_histo_threads: 10
 #---- Tool memory ---- #TODO: adjust memory requirements
+faidx_mem_mb: 1000
+dict_mem_mb: 1000
 fastqc_mem_mb: 2000
 trimmomatic_mem_mb: 10000
 mosdepth_mem_mb: 4000 #The amount of memory is approximately equal to 32-bits * longest chrom length, so for the 249MB chromosome 1, it will require 1GB of memory.
@@ -35,10 +39,12 @@ index_mem_mb: 10000
 bwa_mem_mb: 10000
 fixmate_mem_mb: 5000
 markdup_mem_mb: 5000
-per_thread_sort_mem: 20 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
+per_thread_sort_mem: 10 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
 baserecalibrator_mem_mb:  # TODO: add
 applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
+faidx_time: "00:30:00"
+dict_time: "00:30:00"
 fastqc_time: "04:00:00"
 trimmomatic_time: "10:00:00"
 mosdepth_time: "10:00:00"

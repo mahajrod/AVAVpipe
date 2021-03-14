@@ -11,3 +11,4 @@ dependencies:
   - samtools>=1.10
   - mosdepth>=0.3.1
   - gatk4>=4.2.0.0
+  - picard>=2.18

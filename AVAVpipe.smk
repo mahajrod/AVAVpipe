@@ -25,18 +25,20 @@ localrules: all
 
 rule all:
     input:
+        "%s.fai" % (config["reference"]),
+        "%s.dict" % (os.path.splitext(config["reference"])),
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
+        #expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
 
-
+include: "workflow/Preprocessing/Reference.smk"
 include: "workflow/QCFiltering/FastQC_raw.smk"
 include: "workflow/QCFiltering/Trimmomatic.smk"
 include: "workflow/QCFiltering/FastQC_filtered.smk"
-include: "workflow/QCFiltering/Kmer.smk"
+#include: "workflow/QCFiltering/Kmer.smk"  # not tested
 #include: "workflow/Alignment/Alignment.smk"
 #include: "workflow/Alignment/Coverage.smk"
 #include: "workflow/VariantCall/BSQR.smk"
