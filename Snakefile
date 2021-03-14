@@ -34,13 +34,13 @@ rule all:
         #expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
 
-include: "workflow/Preprocessing/Reference.smk"
-include: "workflow/QCFiltering/FastQC_raw.smk"
-include: "workflow/QCFiltering/Trimmomatic.smk"
-include: "workflow/QCFiltering/FastQC_filtered.smk"
-#include: "workflow/QCFiltering/Kmer.smk"  # not tested
-#include: "workflow/Alignment/Alignment.smk"
-#include: "workflow/Alignment/Coverage.smk"
-#include: "workflow/VariantCall/BSQR.smk"
-#include: "workflow/VariantCall/Genotyping.smk"
+include: "rules/Preprocessing/Reference.smk"
+include: "rules/QCFiltering/FastQC_raw.smk"
+include: "rules/QCFiltering/Trimmomatic.smk"
+include: "rules/QCFiltering/FastQC_filtered.smk"
+#include: "rules/QCFiltering/Kmer.smk"  # not tested
+#include: "rules/Alignment/Alignment.smk"
+#include: "rules/Alignment/Coverage.smk"
+#include: "rules/VariantCall/BSQR.smk"
+#include: "rules/VariantCall/Genotyping.smk"
 
