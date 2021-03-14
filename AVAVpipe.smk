@@ -27,11 +27,9 @@ rule all:
     input:
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
-        #expand("%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
-        #expand("%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
+        #expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
 
 
