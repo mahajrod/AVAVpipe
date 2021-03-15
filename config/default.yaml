@@ -17,7 +17,7 @@ faidx_threads: 1
 dict_threads: 1
 fastqc_threads: 2
 trimmomatic_threads: 10
-bwa_threads: 19
+bwa_threads: 28
 sort_threads: 5
 markdup_threads: 2
 fixmate_threads: 1
