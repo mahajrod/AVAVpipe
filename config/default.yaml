@@ -15,6 +15,7 @@ conda_config: "envs/conda.yaml"
 # tune alignment threads
 faidx_threads: 1
 dict_threads: 1
+prepare_regions_threads: 1
 fastqc_threads: 2
 trimmomatic_threads: 10
 bwa_threads: 19
@@ -30,6 +31,7 @@ jellyfish_histo_threads: 10
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
+prepare_regions_mem_mb: 100
 fastqc_mem_mb: 2000
 trimmomatic_mem_mb: 10000
 mosdepth_mem_mb: 4000 #The amount of memory is approximately equal to 32-bits * longest chrom length, so for the 249MB chromosome 1, it will require 1GB of memory.
@@ -54,11 +56,18 @@ baserecalibrator_time: "24:00:00"
 applybsqr_time: "24:00:00"
 jellyfish_count_time: "48:00:00"
 jellyfish_histo_time: "10:00:00"
+prepare_regions_time: "00:10:00"
 #---- Tool variables ----
 trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
 reference:              #SET!!!!!!!!!!
-mosdpth_min_mapping_quality: 20
+mosdepth_min_mapping_quality: 20
 jellyfish_kmer_length: 23
+split_regions_max_region_length: 10000000
+split_regions_max_seq_number: 100
+split_regions_region_file_format: "GATK"
+split_regions_min_scaffold_length: 1000
+split_regions_scaffold_whitelist: ""
+split_regions_scaffold_blacklist: ""
 #---- Cluster config ----
 #template:
 #  account: account,

@@ -5,7 +5,7 @@ rule mosdepth:
     output:
         "%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir
     params:
-        min_mapping_quality=config["mosdpth_min_mapping_quality"],
+        min_mapping_quality=config["mosdepth_min_mapping_quality"],
         output_pefix="%s/{sample_id}/{sample_id}.coverage" % alignment_dir
     log:
         std="%s/{sample_id}/mosdepth.log" % log_dir,

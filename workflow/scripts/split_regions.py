@@ -37,11 +37,11 @@ parser.add_argument("-m", "--max_length", action="store", dest="max_length", typ
 parser.add_argument("-n", "--max_seq_number", action="store", dest="max_seq_number", type=int, default=1,
                     help="Maximum number of sequences per region. Default: 1")
 parser.add_argument("-b", "--scaffold_blacklist", action="store", dest="scaffold_blacklist",
-                    default=pd.Series(),
+                    default=pd.Series(dtype=str),
                     type=parse_file_to_series,
                     help="File or comma-separated list with scaffolds from black list")
 parser.add_argument("-w", "--scaffold_whitelist", action="store", dest="scaffold_whitelist",
-                    default=pd.Series(),
+                    default=pd.Series(dtype=str),
                     type=parse_file_to_series,
                     help="File or comma-separated list with scaffolds from white list")
 parser.add_argument("-x", "--min_scaffold_len", action="store", dest="min_scaffold_len", type=int, default=None,
@@ -68,7 +68,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
 
     if not whitelist_scaffolds.empty:
         len_df = len_df[len_df.index.isin(whitelist_scaffolds)]
-    print(len_df)
+    #print(len_df)
     number_of_scaffolds = len(len_df)
 
     max_length_soft_threshold = None if max_length is None else int(1.5 * max_length)
@@ -89,7 +89,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
             bunch_list = []
             for region in key_list[bins[i]:bins[i + 1]]:
                 #bunch_list.append([region, 1, len_dict[region]])
-                bunch_list.append([region, 1, len_df.loc["length", region][0]])
+                bunch_list.append([region, 1, len_df.loc[region, "length"]])
             region_list.append(bunch_list)
             for scaffold in key_list[bins[i]:bins[i + 1]]:
                 scaffold_to_region_correspondence_dict[scaffold] = [i]
@@ -99,13 +99,13 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
         bunch_list = []
 
         for region in len_df.index:
-            if len_df.loc["length", region][0] >= max_length:
-                region_list.append([[region, 1, len_df.loc["length", region][0]]])
+            if len_df.loc[region, "length"] >= max_length:
+                region_list.append([[region, 1, len_df.loc[region, "length"]]])
                 scaffold_to_region_correspondence_dict[region] = [region_index]
                 region_index += 1
             else:
-                bunch_list.append([region, 1, len_df.loc["length", region][0]])
-                bunch_length += len_df.loc["length", region][0]
+                bunch_list.append([region, 1, len_df.loc[region, "length"]])
+                bunch_length += len_df.loc[region, "length"]
                 if (bunch_length >= max_length) or (len(bunch_list) == max_seq_number):
                     region_list.append(bunch_list)
                     for scaffold in bunch_list:
@@ -189,7 +189,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
         for directory in output_dir, "%s/splited/" % output_dir:
             safe_mkdir(directory)
         scaffold_ids = pd.Series(len_df.index)
-        print(scaffold_ids)
+        #print(scaffold_ids)
         scaffold_ids.to_csv("%s/scaffold.ids" % output_dir, sep="\t", header=False, index=False)
         len_df.to_csv("%s/scaffold.len" % output_dir, sep="\t", index=True, header=False)
         index = 1
@@ -213,6 +213,9 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
                                 out_fd.write(region[0])
                                 out_fd.write("\n")
             index += 1
+        with open("%s/scaffold_to_region.correspondence" % output_dir, "w") as cor_fd:
+            for region in scaffold_to_region_correspondence_dict:
+                cor_fd.write("{0}\t{1}\n".format(region, ",".join(map(str, scaffold_to_region_correspondence_dict[region]))))
         #scaffold_to_region_correspondence_dict.write("%s/SCAFFOLD_TO_REGION.correspondence" % output_dir,
         #                                             splited_values=True)
     else:
