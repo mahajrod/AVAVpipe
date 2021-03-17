@@ -32,13 +32,13 @@ rule all:
         expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
-        #expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
+        expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"])
 
 include: "workflow/rules/Preprocessing/Reference.smk"
 include: "workflow/rules/QCFiltering/FastQC_raw.smk"
 include: "workflow/rules/QCFiltering/Trimmomatic.smk"
 include: "workflow/rules/QCFiltering/FastQC_filtered.smk"
-#include: "workflow/rules/QCFiltering/Kmer.smk"  # not tested
+include: "workflow/rules/QCFiltering/Kmer.smk"  # not tested
 include: "workflow/rules/Alignment/Alignment.smk"
 include: "workflow/rules/Alignment/Coverage.smk"
 #include: "workflow/rules/VariantCall/BSQR.smk"
