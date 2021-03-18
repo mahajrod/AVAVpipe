@@ -12,7 +12,10 @@ import pandas as pd
 
 def parse_file_to_series(path):
     if os.path.isfile(path):
-        return pd.read_csv(path, sep="\t", squeeze=True)
+        try:
+            return pd.read_csv(path, sep="\t", squeeze=True)
+        except:
+            return pd.Series(dtype=str)
     else:
         return pd.Series(path.split(","))
 
