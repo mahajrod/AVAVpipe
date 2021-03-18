@@ -28,7 +28,7 @@ rule baserecalibrator:
 rule gatherbsqrreports:
     input:
         expand("%s/{sample_id}/baseracalibrator/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir,
-               region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path),
+               region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
                sample_id=config["sample_list"])
     output:
         "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
