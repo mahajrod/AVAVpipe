@@ -25,12 +25,11 @@ markdup_threads: 2
 fixmate_threads: 1
 index_threads: 5
 mosdepth_threads: 10
+jellyfish_count_threads: 26
+jellyfish_histo_threads: 10
 baserecalibrator_threads: 1
 gatherbsqrreports_threads: 1
 applybsqr_threads: 1
-jellyfish_count_threads: 26
-jellyfish_histo_threads: 10
-
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
@@ -46,8 +45,8 @@ fixmate_mem_mb: 20000
 markdup_mem_mb: 20000
 per_thread_sort_mem: 10 # memory in gigabytes
 baserecalibrator_mem_mb:  20000 #
-gatherbsqrreports_mem_mb: 40000
-applybsqr_mem_mb: # TODO: add
+gatherbsqrreports_mem_mb: 6000
+applybsqr_mem_mb: 40000 #
 #---- Tool time ----
 faidx_time: "00:30:00"
 dict_time: "00:30:00"
@@ -56,18 +55,18 @@ trimmomatic_time: "10:00:00"
 mosdepth_time: "10:00:00"
 index_time: "10:00:00"
 map_time: "48:00:00"
-baserecalibrator_time: "24:00:00"
-gatherbsqrreports_time: "24:00:00"
-applybsqr_time: "24:00:00"
 jellyfish_count_time: "48:00:00"
 jellyfish_histo_time: "10:00:00"
 prepare_regions_time: "00:10:00"
+baserecalibrator_time: "24:00:00"
+gatherbsqrreports_time: "24:00:00"
+applybsqr_time: "24:00:00"
 #---- Tool variables ----
 trimmomatic_adapters: "resources/adapters/TruSeq2-PE.fa"
 reference:              #SET!!!!!!!!!!
 mosdepth_min_mapping_quality: 20
 jellyfish_kmer_length: 23
-split_regions_max_region_length: 50000000
+split_regions_max_region_length: 25000000
 split_regions_max_seq_number: 400
 split_regions_region_file_format: "GATK"
 split_regions_min_scaffold_length: 1
