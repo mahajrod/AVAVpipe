@@ -48,8 +48,7 @@ rule gatherbsqrreports:
         mem=config["gatherbsqrreports_mem_mb"],
     threads: config["gatherbsqrreports_threads"]
     run:
-        input_options = list(map("-I {}".format, [input] if isinstance(input, str) else input))
-        shell("gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports {input_options}  -O {output}")
+        shell("gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports %s -O {output}" % (" ".join(list(map("-I {}".format, [input] if isinstance(input, str) else input)))) )
 
 
 """
