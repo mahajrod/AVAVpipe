@@ -26,9 +26,11 @@ fixmate_threads: 1
 index_threads: 5
 mosdepth_threads: 10
 baserecalibrator_threads: 1
+gatherbsqrreports_threads: 1
 applybsqr_threads: 1
 jellyfish_count_threads: 26
 jellyfish_histo_threads: 10
+
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
@@ -44,6 +46,7 @@ fixmate_mem_mb: 20000
 markdup_mem_mb: 20000
 per_thread_sort_mem: 10 # memory in gigabytes
 baserecalibrator_mem_mb:  20000 #
+gatherbsqrreports_mem_mb: 40000
 applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
 faidx_time: "00:30:00"
@@ -54,6 +57,7 @@ mosdepth_time: "10:00:00"
 index_time: "10:00:00"
 map_time: "48:00:00"
 baserecalibrator_time: "24:00:00"
+gatherbsqrreports_time: "24:00:00"
 applybsqr_time: "24:00:00"
 jellyfish_count_time: "48:00:00"
 jellyfish_histo_time: "10:00:00"
