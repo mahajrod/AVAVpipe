@@ -47,7 +47,7 @@ rule gatherbsqrreports:
         mem=config["gatherbsqrreports_mem_mb"],
     threads: config["gatherbsqrreports_threads"]
     shell:
-        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I %s  -O {output}" % " -I ".join("{input}".split())
+        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I %s  -O {output}" % " -I ".join(input)
 
 
 """
