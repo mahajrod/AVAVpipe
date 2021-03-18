@@ -49,7 +49,7 @@ rule gatherbsqrreports:
     threads: config["gatherbsqrreports_threads"]
     shell:
         "ls {params.input_files} | sort -V > {params.recal_table_list}; "
-        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output}"
+        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output} > {log.std} 2>&1"
 
 """
 rule applybsqr:
