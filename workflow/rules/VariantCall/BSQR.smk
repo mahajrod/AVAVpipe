@@ -5,7 +5,7 @@ rule baserecalibrator:
         known_variants_vcf_list=known_variants_vcf_list,
         region="%s/intervals/region_{region_id}.list" % reference_region_dir_path
     output:
-        "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
+        table="%s/{sample_id}/baseracalibrator/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir,
     log:
         std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
         cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
@@ -21,33 +21,34 @@ rule baserecalibrator:
     threads: config["baserecalibrator_threads"]
     shell:
         "gatk --java-options '-Xmx{resources.mem}m' BaseRecalibrator -R {input.reference} -L {input.region} "
-        "-I {input.bam} -O {output} --known-sites %s > {log.std} 2>&1" % " --known-sites ".join(list(map(lambda s: s.name, known_variants_vcf_list)))
-"""
+        "-I {input.bam} -O {output.table} --known-sites %s > {log.std} 2>&1" % " --known-sites ".join(list(map(lambda s: s.name, known_variants_vcf_list)))
+
+
 rule gatherbsqrreports:
     input:
-        bam=rules.bwa_map.output.bam,
-        reference=config["reference"],
-        known_sites_vcf_list=expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"]),
-        region="%s/splited/region_{region_id}.list" % reference_region_dir_path
+        rules.baserecalibrator.output
     output:
-        "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
+        "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
+    params:
+        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)
     log:
-        std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
-        cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.err" % config["cluster_log_dir"]
+        std="%s/{sample_id}/gatherbsqrreports.log" % log_dir,
+        cluster_log="%s/{sample_id}/gatherbsqrreports.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}/gatherbsqrreports.cluster.err" % config["cluster_log_dir"]
     benchmark:
-        "%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt" % benchmark_dir
+        "%s/{sample_id}/gatherbsqrreports.benchmark.txt" % benchmark_dir
     conda:
         "../../%s" % config["conda_config"]
     resources:
-        cpus=config["baserecalibrator_threads"],
-        time=config["baserecalibrator_time"],
-        mem=config["baserecalibrator_mem_mb"],
-    threads: config["baserecalibrator_threads"]
+        cpus=config["gatherbsqrreports_threads"],
+        time=config["gatherbsqrreports_time"],
+        mem=config["gatherbsqrreports_mem_mb"],
+    threads: config["gatherbsqrreports_threads"]
     shell:
-        "gatk --java-options '-Xmx4G' GatherBQSRReports -I ((generated1-bqsr.txt)) -I ((generated2-bqsr.txt)) -O [[generated-bqsr-merged.txt]]"
+        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I %s  -O {output}" % " -I".join("{input}".split())
 
 
+"""
 rule applybsqr:
     input:
         bam=rules.bwa_map.output.bam,

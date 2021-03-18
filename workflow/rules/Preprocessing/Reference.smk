@@ -44,7 +44,7 @@ rule ref_dict:
     shell:
          "picard CreateSequenceDictionary -R {input} > {log.std} 2>&1"
 
-rule prepare_regions:
+rule prepare_recalibration_regions:
     input:
          fai=rules.ref_faidx.output,
          blacklist=reference_blacklist_path, #"%s.blacklist" % (os.path.splitext(config["reference"])[0]),
@@ -78,4 +78,3 @@ rule prepare_regions:
          " -w {input.whitelist} -b {input.blacklist} "
          " -n {params.max_seq_number} -g {params.region_file_format} -x {params.min_scaffold_length} "
          " -o {params.output_dir} > {log.std} 2>&1"
-
