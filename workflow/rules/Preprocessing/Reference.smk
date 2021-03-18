@@ -72,7 +72,7 @@ rule prepare_regions:
     threads:
         config["prepare_regions_threads"]
     shell:
-         "pwd > {log.std}; ../../scripts/split_regions.py -s -f {input} -m {params.max_region_length}"
+         "workflow/scripts/split_regions.py -s -f {input} -m {params.max_region_length}"
          " -n {params.max_seq_number} -g {params.region_file_format} -x {params.min_scaffold_length} "
-         " -o {params.output_dir} >> {log.std} 2>&1"
+         " -o {params.output_dir} > {log.std} 2>&1"
 
