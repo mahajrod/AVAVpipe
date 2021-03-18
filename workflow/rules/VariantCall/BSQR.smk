@@ -32,7 +32,7 @@ rule gatherbsqrreports:
     output:
         "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
     params:
-        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path),
+        input_dir="%s/{sample_id}/baserecalibrator/" % alignment_dir,
         recal_table_list="%s/{sample_id}/{sample_id}.sorted.recal.table.list" % alignment_dir
     log:
         std="%s/{sample_id}.gatherbsqrreports.log" % log_dir,
@@ -48,7 +48,7 @@ rule gatherbsqrreports:
         mem=config["gatherbsqrreports_mem_mb"],
     threads: config["gatherbsqrreports_threads"]
     shell:
-        "echo {input} | sed 's/ /\\n/' > {params.recal_table_list}; "
+        "ls {params.input_dir} > {params.recal_table_list}; "
         "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output}"
 
 """
