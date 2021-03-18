@@ -48,7 +48,7 @@ rule gatherbsqrreports:
         mem=config["gatherbsqrreports_mem_mb"],
     threads: config["gatherbsqrreports_threads"]
     shell:
-        "echo {input} | sed 's/ /\n/' > {params.recal_table_list}; "
+        "echo {input} | sed 's/ /\\n/' > {params.recal_table_list}; "
         "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output}"
 
 """
