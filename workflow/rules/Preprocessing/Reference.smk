@@ -74,5 +74,5 @@ rule prepare_regions:
     shell:
          "../../scripts/split_regions.py -s -f {input} -m {params.max_region_length}"
          " -n {params.max_seq_number} -g {params.region_file_format} -x {params.min_scaffold_length} "
-         " -o {params.output_dir}"
+         " -o {params.output_dir} > {log.std} 2>&1"
 
