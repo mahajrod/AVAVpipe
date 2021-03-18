@@ -17,8 +17,8 @@ reference_fai_path = Path(str(reference_path) + ".fai")
 reference_dict_path = reference_dir_path.joinpath(reference_path.stem + ".dict")
 reference_blacklist_path = reference_dir_path.joinpath(reference_path.stem + ".blacklist")
 reference_whitelist_path = reference_dir_path.joinpath(reference_path.stem + ".whitelist")
-reference_region_correspondence_path = reference_dir_path.joinpath("scaffold_to_region.correspondence")
 reference_region_dir_path = reference_dir_path.joinpath("regions")
+reference_region_correspondence_path = reference_region_dir_path.joinpath("scaffold_to_region.correspondence")
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
