@@ -20,6 +20,7 @@ reference_whitelist_path = reference_dir_path.joinpath(reference_path.stem + ".w
 reference_region_dir_path = reference_dir_path.joinpath("recalibration_regions")
 reference_region_correspondence_path = reference_region_dir_path.joinpath("scaffold_to_region.correspondence")
 
+known_variants_vcf_list = list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz"))
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
 
