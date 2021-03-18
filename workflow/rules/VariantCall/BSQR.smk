@@ -1,10 +1,10 @@
 rule baserecalibrator:
     input:
+        region="%s/intervals/region_{region_id}.list" % reference_region_dir_path,
         bam="%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir,
         bai="%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir,
         reference=config["reference"],
-        known_variants_vcf_list=known_variants_vcf_list,
-        region="%s/intervals/region_{region_id}.list" % reference_region_dir_path
+        known_variants_vcf_list=known_variants_vcf_list
     output:
         table="%s/{sample_id}/baseracalibrator/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir,
     log:
