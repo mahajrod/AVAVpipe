@@ -32,8 +32,7 @@ rule gatherbsqrreports:
     output:
         "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
     params:
-        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path),
-        input_options=
+        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)
     log:
         std="%s/{sample_id}.gatherbsqrreports.log" % log_dir,
         cluster_log="%s/{sample_id}.gatherbsqrreports.cluster.log" % config["cluster_log_dir"],
