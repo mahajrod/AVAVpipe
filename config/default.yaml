@@ -43,7 +43,7 @@ bwa_mem_mb: 30000
 fixmate_mem_mb: 20000
 markdup_mem_mb: 20000
 per_thread_sort_mem: 10 # memory in gigabytes
-baserecalibrator_mem_mb:  10000 #
+baserecalibrator_mem_mb:  20000 #
 applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
 faidx_time: "00:30:00"
