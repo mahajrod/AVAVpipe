@@ -2,7 +2,7 @@ rule baserecalibrator:
     input:
         bam=rules.bwa_map.output.bam,
         reference=config["reference"],
-        known_sites_vcf_list=list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz")),
+        known_variants_vcf_list=known_variants_vcf_list,
         region="%s/intervals/region_{region_id}.list" % reference_region_dir_path
     output:
         "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
@@ -21,7 +21,7 @@ rule baserecalibrator:
     threads: config["baserecalibrator_threads"]
     shell:
         "gatk --java-options '-Xmx{resources.mem}m' BaseRecalibrator -R {input.reference} -L {input.region} "
-        "-I {input.bam} -O {output} %s > {log.std} 2>&1" % " ".join(expand("--known-sites {vcf}", vcf={input.known_sites_vcf_list}))
+        "-I {input.bam} -O {output} --known-sites %s > {log.std} 2>&1" % " --known-sites ".join(known_variants_vcf_list)
 """
 rule gatherbsqrreports:
     input:
