@@ -26,7 +26,7 @@ rule ref_dict:
     input:
         config["reference"]
     output:
-        "%s.dict" % (os.path.splitext(config["reference"])[0])
+        reference_dict_path #"%s.dict" % (os.path.splitext(config["reference"])[0])
     log:
         std="%s/dict.log" % log_dir,
         cluster_log="%s/dict.cluster.log" % config["cluster_log_dir"],
@@ -47,10 +47,10 @@ rule ref_dict:
 rule prepare_regions:
     input:
          fai=rules.ref_faidx.output,
-         blacklist="%s.blacklist" % (os.path.splitext(config["reference"])[0]),
-         whitelist="%s.whitelist" % (os.path.splitext(config["reference"])[0])
+         blacklist=reference_blacklist_path, #"%s.blacklist" % (os.path.splitext(config["reference"])[0]),
+         whitelist=reference_whitelist_path, #"%s.whitelist" % (os.path.splitext(config["reference"])[0])
     output:
-         "%s/regions/scaffold_to_region.correspondence" % os.path.dirname(config["reference"])
+         reference_region_correspondence_path #"%s/regions/scaffold_to_region.correspondence" % os.path.dirname(config["reference"])
     params:
         max_region_length=config["split_regions_max_region_length"],
         max_seq_number=config["split_regions_max_seq_number"],
@@ -58,7 +58,7 @@ rule prepare_regions:
         min_scaffold_length=config["split_regions_min_scaffold_length"],
         #scaffold_whitelist=config["split_regions_scaffold_whitelist"],
         #scaffold_blacklist=config["split_regions_scaffold_blacklist"],
-        output_dir="%s/regions/" % os.path.dirname(config["reference"])
+        output_dir=reference_region_dir_path #"%s/regions/" % os.path.dirname(config["reference"])
     log:
         std="%s/prepare_regions.log" % log_dir,
         cluster_log="%s/prepare_regions.cluster.log" % config["cluster_log_dir"],

@@ -11,6 +11,7 @@ cluster_log_dir: "cluster_logs"
 error_dir: "errors"
 benchmark_dir: "benchmarks"
 conda_config: "envs/conda.yaml"
+known_variants_dir: "resources/known_variants"
 #---- Tool threads ----
 # tune alignment threads
 faidx_threads: 1
@@ -41,8 +42,8 @@ index_mem_mb: 10000
 bwa_mem_mb: 30000
 fixmate_mem_mb: 20000
 markdup_mem_mb: 20000
-per_thread_sort_mem: 10 # memory in gigabytes TODO: adjust on cluster !!!!lowered for testing
-baserecalibrator_mem_mb:  # TODO: add
+per_thread_sort_mem: 10 # memory in gigabytes
+baserecalibrator_mem_mb:  10000 #
 applybsqr_mem_mb: # TODO: add
 #---- Tool time ----
 faidx_time: "00:30:00"
@@ -58,7 +59,7 @@ jellyfish_count_time: "48:00:00"
 jellyfish_histo_time: "10:00:00"
 prepare_regions_time: "00:10:00"
 #---- Tool variables ----
-trimmomatic_adapters:   #SET!!!!!!!!!!!!!!
+trimmomatic_adapters: "resources/adapters/TruSeq2-PE.fa"
 reference:              #SET!!!!!!!!!!
 mosdepth_min_mapping_quality: 20
 jellyfish_kmer_length: 23
@@ -68,9 +69,3 @@ split_regions_region_file_format: "GATK"
 split_regions_min_scaffold_length: 1000
 #split_regions_scaffold_whitelist: ""
 #split_regions_scaffold_blacklist: ""
-#---- Cluster config ----
-#template:
-#  account: account,
-#  time: "00:15:00",
-#  n: 1,
-#  partition : core
