@@ -18,10 +18,7 @@ def parse_file_to_series(path):
 
 
 def safe_mkdir(path):
-    try:
-        os.mkdir(path)
-    except:
-        pass
+    Path(path).mkdir(exist_ok=True)
 
 
 parser = argparse.ArgumentParser()
