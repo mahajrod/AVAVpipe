@@ -32,7 +32,8 @@ rule gatherbsqrreports:
     output:
         "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
     params:
-        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)
+        ids=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path),
+        recal_table_list="%s/{sample_id}/{sample_id}.sorted.recal.table.list" % alignment_dir
     log:
         std="%s/{sample_id}.gatherbsqrreports.log" % log_dir,
         cluster_log="%s/{sample_id}.gatherbsqrreports.cluster.log" % config["cluster_log_dir"],
@@ -47,11 +48,9 @@ rule gatherbsqrreports:
         mem=config["gatherbsqrreports_mem_mb"],
     threads: config["gatherbsqrreports_threads"]
     shell:
-        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports %s -O {output}" % (" ".join(list(map("-I {}".format, [input] if isinstance(input, str) else input))))
+        "echo {input} | sed 's/ /\n/' > {params.recal_table_list}; "
+        "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output}"
 
-rule applybsqr:
-    input:
-        "t"
 """
 rule applybsqr:
     input:
