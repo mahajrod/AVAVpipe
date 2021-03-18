@@ -2,15 +2,16 @@ rule baserecalibrator:
     input:
         bam=rules.bwa_map.output.bam,
         reference=config["reference"],
-        known_sites_vcf_list=expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"])
+        known_sites_vcf_list=expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"]),
+        region="%s/regions/splited/region_{region_id}.list" % os.path.dirname(config["reference"])
     output:
-        "%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir
+        "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
     log:
-        std="%s/{sample_id}/baserecalibrator.log" % log_dir,
-        cluster_log="%s/{sample_id}.baserecalibrator.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.baserecalibrator.cluster.err" % config["cluster_log_dir"]
+        std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
+        cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.err" % config["cluster_log_dir"]
     benchmark:
-        "%s/{sample_id}/baserecalibrator.benchmark.txt" % benchmark_dir
+        "%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt" % benchmark_dir
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -19,7 +20,33 @@ rule baserecalibrator:
         mem=config["baserecalibrator_mem_mb"],
     threads: config["baserecalibrator_threads"]
     shell:
-        "gatk BaseRecalibrator -R {input.reference} -I {input.bam} {input.known_sites_vcf_list} -O {output} > {log.std} 2>&1"
+        "gatk BaseRecalibrator -R {input.reference} -L {input.region} "
+        "-I {input.bam} -O {output} {input.known_sites_vcf_list} > {log.std} 2>&1"
+
+rule gatherbsqrreports:
+    input:
+        bam=rules.bwa_map.output.bam,
+        reference=config["reference"],
+        known_sites_vcf_list=expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"]),
+        region="%s/regions/splited/region_{region_id}.list" % os.path.dirname(config["reference"])
+    output:
+        "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
+    log:
+        std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
+        cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.err" % config["cluster_log_dir"]
+    benchmark:
+        "%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt" % benchmark_dir
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["baserecalibrator_threads"],
+        time=config["baserecalibrator_time"],
+        mem=config["baserecalibrator_mem_mb"],
+    threads: config["baserecalibrator_threads"]
+    shell:
+        "gatk --java-options '-Xmx4G' GatherBQSRReports -I ((generated1-bqsr.txt)) -I ((generated2-bqsr.txt)) -O [[generated-bqsr-merged.txt]]"
+
 
 rule applybsqr:
     input:
@@ -27,7 +54,7 @@ rule applybsqr:
         reference=config["reference"],
         table=rules.baserecalibrator.output
     output:
-        "%s/{sample_id}/{sample_id}.sorted.recalibrated.bam" % alignment_dir
+        "%s/{sample_id}/{sample_id}.sorted.recalibrated.bam" %  alignment_dir
     log:
         std="%s/{sample_id}/applybsqr.log" % log_dir,
         cluster_log="%s/{sample_id}.applybsqr.cluster.log" % config["cluster_log_dir"],

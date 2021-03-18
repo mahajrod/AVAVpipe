@@ -46,7 +46,9 @@ rule ref_dict:
 
 rule prepare_regions:
     input:
-         rules.ref_faidx.output
+         fai=rules.ref_faidx.output,
+         blacklist="%s.blacklist" % (os.path.splitext(config["reference"])[0]),
+         whitelist="%s.whitelist" % (os.path.splitext(config["reference"])[0])
     output:
          "%s/regions/scaffold_to_region.correspondence" % os.path.dirname(config["reference"])
     params:
@@ -54,8 +56,8 @@ rule prepare_regions:
         max_seq_number=config["split_regions_max_seq_number"],
         region_file_format=config["split_regions_region_file_format"],
         min_scaffold_length=config["split_regions_min_scaffold_length"],
-        scaffold_whitelist=config["split_regions_scaffold_whitelist"],
-        scaffold_blacklist=config["split_regions_scaffold_blacklist"],
+        #scaffold_whitelist=config["split_regions_scaffold_whitelist"],
+        #scaffold_blacklist=config["split_regions_scaffold_blacklist"],
         output_dir="%s/regions/" % os.path.dirname(config["reference"])
     log:
         std="%s/prepare_regions.log" % log_dir,
@@ -72,7 +74,8 @@ rule prepare_regions:
     threads:
         config["prepare_regions_threads"]
     shell:
-         "workflow/scripts/split_regions.py -s -f {input} -m {params.max_region_length}"
+         "workflow/scripts/split_regions.py -s -f {input.fai} -m {params.max_region_length}"
+         " -w {input.whitelist} -b {input.blacklist} "
          " -n {params.max_seq_number} -g {params.region_file_format} -x {params.min_scaffold_length} "
          " -o {params.output_dir} > {log.std} 2>&1"
 

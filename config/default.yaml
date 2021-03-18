@@ -66,8 +66,8 @@ split_regions_max_region_length: 10000000
 split_regions_max_seq_number: 100
 split_regions_region_file_format: "GATK"
 split_regions_min_scaffold_length: 1000
-split_regions_scaffold_whitelist: ""
-split_regions_scaffold_blacklist: ""
+#split_regions_scaffold_whitelist: ""
+#split_regions_scaffold_blacklist: ""
 #---- Cluster config ----
 #template:
 #  account: account,
