@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 fastqc_dir = "{0}/{1}".format(config["out_dir"], config["fastqc_dir"])
