@@ -21,7 +21,7 @@ rule baserecalibrator:
     threads: config["baserecalibrator_threads"]
     shell:
         "gatk --java-options '-Xmx{resources.mem}m' BaseRecalibrator -R {input.reference} -L {input.region} "
-        "-I {input.bam} -O {output} %s > {log.std} 2>&1" % " ".join(expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"]))
+        "-I {input.bam} -O {output} %s > {log.std} 2>&1" % " ".join(expand("--known-sites {vcf}", vcf={input.known_sites_vcf_list}))
 """
 rule gatherbsqrreports:
     input:
