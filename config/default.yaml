@@ -67,8 +67,8 @@ trimmomatic_adapters: "resources/adapters/TruSeq2-PE.fa"
 reference:              #SET!!!!!!!!!!
 mosdepth_min_mapping_quality: 20
 jellyfish_kmer_length: 23
-split_regions_max_region_length: 10000000
-split_regions_max_seq_number: 100
+split_regions_max_region_length: 50000000
+split_regions_max_seq_number: 400
 split_regions_region_file_format: "GATK"
 split_regions_min_scaffold_length: 1
 #split_regions_scaffold_whitelist: ""
