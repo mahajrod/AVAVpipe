@@ -6,13 +6,14 @@ import argparse
 
 from collections import OrderedDict
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
 
 def parse_file_to_series(path):
     if Path(path).is_file():
-        return pd.read_csv(path, sep="\t", squeeze=True)
+        return pd.read_csv(path, sep="\t", squeeze=True, header=None)
     else:
         return pd.Series(path.split(","))
 
