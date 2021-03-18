@@ -68,7 +68,6 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
         len_df = len_df[~len_df.index.isin(blacklist_scaffolds)]
     if not whitelist_scaffolds.empty:
         len_df = len_df[len_df.index.isin(whitelist_scaffolds)]
-    print(len_df)
     number_of_scaffolds = len(len_df)
 
     max_length_soft_threshold = None if max_length is None else int(1.5 * max_length)
