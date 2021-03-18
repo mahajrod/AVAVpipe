@@ -185,7 +185,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
                 region_index += 1
 
     if output_dir:
-        for directory in output_dir, "%s/splited/" % output_dir:
+        for directory in output_dir, "%s/intervals/" % output_dir:
             safe_mkdir(directory)
         scaffold_ids = pd.Series(len_df.index)
         #print(scaffold_ids)
@@ -193,7 +193,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
         len_df.to_csv("%s/scaffold.len" % output_dir, sep="\t", index=True, header=False)
         index = 1
         for regions in region_list:
-            with open("%s/splited/region_%i.list" % (output_dir, index), "w") as out_fd:
+            with open("%s/intervals/region_%i.list" % (output_dir, index), "w") as out_fd:
                 for region in regions:
                     if isinstance(region, str):
                         out_fd.write(region)

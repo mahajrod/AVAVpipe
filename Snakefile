@@ -52,6 +52,6 @@ include: "workflow/rules/QCFiltering/FastQC_filtered.smk"
 include: "workflow/rules/QCFiltering/Kmer.smk"  # not tested
 include: "workflow/rules/Alignment/Alignment.smk"
 include: "workflow/rules/Alignment/Coverage.smk"
-#include: "workflow/rules/VariantCall/BSQR.smk"
+include: "workflow/rules/VariantCall/BSQR.smk"
 #include: "workflow/rules/VariantCall/Genotyping.smk"
 

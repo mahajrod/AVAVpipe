@@ -3,7 +3,7 @@ rule baserecalibrator:
         bam=rules.bwa_map.output.bam,
         reference=config["reference"],
         known_sites_vcf_list=list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz")),
-        region="%s/splited/region_{region_id}.list" % reference_region_dir_path
+        region="%s/intervals/region_{region_id}.list" % reference_region_dir_path
     output:
         "%s/{sample_id}/{sample_id}.region_{region_id}.sorted.recal.table" % alignment_dir
     log:
@@ -21,8 +21,8 @@ rule baserecalibrator:
     threads: config["baserecalibrator_threads"]
     shell:
         "gatk --java-options '-Xmx{resources.mem}m' BaseRecalibrator -R {input.reference} -L {input.region} "
-        "-I {input.bam} -O {output} %s > {log.std} 2>&1" % expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"])
-
+        "-I {input.bam} -O {output} %s > {log.std} 2>&1" % " ".join(expand("--known-sites {vcf}", vcf=config["known_sites_vcf_list"]))
+"""
 rule gatherbsqrreports:
     input:
         bam=rules.bwa_map.output.bam,
@@ -70,3 +70,4 @@ rule applybsqr:
     threads: config["applybsqr_threads"]
     shell:
         "gatk ApplyBQSR -R {input.reference} -I {input.bam} --bqsr-recal-file {input.table} -O {output} > {log.std} 2>&1"
+"""
