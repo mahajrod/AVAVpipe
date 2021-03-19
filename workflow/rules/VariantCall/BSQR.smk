@@ -58,7 +58,8 @@ rule applybsqr:
         reference=config["reference"],
         table=rules.gatherbsqrreports.output
     output:
-        "%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir
+        bam="%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir,
+        bai="%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bai" %  alignment_dir
     log:
         std="%s/{sample_id}/applybsqr.log" % log_dir,
         cluster_log="%s/{sample_id}.applybsqr.cluster.log" % config["cluster_log_dir"],
