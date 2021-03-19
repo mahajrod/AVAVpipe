@@ -4,7 +4,7 @@ rule bwa_map:
         reverse_reads=rules.trimmomatic.output.pe_reverse,#"%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir
         reference=config["reference"]
     output:
-        bam="%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir,
+        bam=temp("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir)
     params:
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
