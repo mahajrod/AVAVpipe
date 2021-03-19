@@ -27,7 +27,6 @@ rule haplotypecaller_gvcf:
         " -I {input.bam} -O {output.table} > {log.std} 2>&1"
 
 rule merge_splited_gvcf:
-
     input:
         lambda wildcards:  expand("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir,
                                   region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],

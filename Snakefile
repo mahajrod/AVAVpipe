@@ -58,4 +58,3 @@ include: "workflow/rules/Alignment/Alignment.smk"
 include: "workflow/rules/Alignment/Coverage.smk"
 include: "workflow/rules/VariantCall/BSQR.smk"
 include: "workflow/rules/VariantCall/Genotyping.smk"
-
