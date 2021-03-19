@@ -6,7 +6,7 @@ rule baserecalibrator:
         reference=config["reference"],
         known_variants_vcf_list=known_variants_vcf_list
     output:
-        table="%s/{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table" % alignment_dir,
+        table="%s/{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table" % alignment_dir
     log:
         std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
         cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
