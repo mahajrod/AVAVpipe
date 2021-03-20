@@ -73,8 +73,8 @@ rule all:
         directory(joint_snpcall_dir / "gvcf_database"),
         joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz",
         joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz",
-        expand("%s/variantcalling_metrics_{variant_type}.log" % log_dir, varian_type=["snp", "indel"]),
-        expand(joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.varianteval", varian_type=["snp", "indel"])
+        expand("%s/variantcalling_metrics_{variant_type}.log" % log_dir, variant_type=["snp", "indel"]),
+        expand(joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.varianteval", variant_type=["snp", "indel"])
 
 
 
