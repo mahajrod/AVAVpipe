@@ -72,9 +72,9 @@ def check_gvcf_integrity(gvcf_file, reference_fai, output_prefix):
                     scaffold_dict[scaffold].append([deepcopy(start), deepcopy(end)])
             prev_scaffold = scaffold
 
-    complete_scaffolds = Series()
-    fragmented_scaffolds = Series()
-    scaffolds_with_absent_fragments = Series()
+    complete_scaffolds = []
+    fragmented_scaffolds = []
+    scaffolds_with_absent_fragments = []
 
     with open("%s.scaffold_regions" % output_prefix, "w") as scaf_reg_fd:
 
@@ -90,9 +90,9 @@ def check_gvcf_integrity(gvcf_file, reference_fai, output_prefix):
             scaf_reg_fd.write(
                 "%s\t%s\n" % (scaffold, ",".join(map(lambda s: "-".join(map(str, s)), scaffold_dict[scaffold]))))
 
-    complete_scaffolds.to_csv("%s.complete_scaffolds" % output_prefix, sep="\t", header=False, index=False)
-    fragmented_scaffolds.to_csv("%s.fragmented_scaffolds" % output_prefix, sep="\t", header=False, index=False)
-    scaffolds_with_absent_fragments.to_csv("%s.scaffolds_with_absent_fragments" % output_prefix, sep="\t", header=False, index=False)
+    Series(complete_scaffolds).to_csv("%s.complete_scaffolds" % output_prefix, sep="\t", header=False, index=False)
+    Series(fragmented_scaffolds).to_csv("%s.fragmented_scaffolds" % output_prefix, sep="\t", header=False, index=False)
+    Series(scaffolds_with_absent_fragments).to_csv("%s.scaffolds_with_absent_fragments" % output_prefix, sep="\t", header=False, index=False)
 
 
 parser = argparse.ArgumentParser()
