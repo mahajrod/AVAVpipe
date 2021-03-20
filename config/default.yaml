@@ -31,7 +31,7 @@ baserecalibrator_threads: 1
 gatherbsqrreports_threads: 1
 applybsqr_threads: 1
 haplotypecaller_threads: 1
-merge_splited_gvcf_thread: 1
+merge_splited_gvcf_threads: 1
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
