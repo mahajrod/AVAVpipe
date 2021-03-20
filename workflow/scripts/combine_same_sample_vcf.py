@@ -3,8 +3,7 @@ __author__ = 'Sergei F. Kliver'
 
 import argparse
 
-from pandas import Series, read_csv
-from pathlib import Path
+from pandas import read_csv
 
 
 parser = argparse.ArgumentParser()
