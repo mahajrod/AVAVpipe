@@ -37,7 +37,7 @@ rule merge_splited_gvcf:
         "%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir
     params:
         input_files="%s/{sample_id}/haplotypecaller_gvcf/*.gvcf" % snpcall_dir,
-        splited_gvcf_list="%s/{sample_id}/{sample_id}.sorted.mkdup.recal.table.list" % snpcall_dir,
+        splited_gvcf_list="%s/{sample_id}/{sample_id}.splited_gvf_list" % snpcall_dir,
         reference_dict=reference_dict_path
     log:
         std="%s/{sample_id}.merge_splited_gvcf.log" % log_dir,
@@ -54,7 +54,7 @@ rule merge_splited_gvcf:
     threads: config["merge_splited_gvcf_threads"]
     shell:
         "ls {params.input_files} | sort -V > {params.splited_gvcf_list}; "
-        " picard --java-options '-Xmx{resources.mem}m' MergeVcfs -I {params.splited_gvcf_list} -O {output} "
+        " picard -Xmx{resources.mem}m MergeVcfs -I {params.splited_gvcf_list} -O {output} "
         " -D {params.reference_dict}> {log.std} 2>&1"
 
 rule create_sample_file:
@@ -98,3 +98,29 @@ rule genomicsdbimport:
         " --reader-threads {params.reader_threads}"
         " --genomicsdb-workspace-path {output} "
         " -L {params.interval_list}> {log.std} 2>&1"
+
+rule genotypegvcfs:
+    input:
+        database=rules.genomicsdbimport.output,
+        reference=reference_path
+    output:
+        joint_snpcall_dir / "all_samples.vcf.gz"
+    log:
+        std="%s/genotypegvcfs.log" % log_dir,
+        cluster_log="%s/ggenotypegvcfs.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/genotypegvcfs.cluster.err" % config["cluster_log_dir"]
+    benchmark:
+        "%s/genotypegvcfs.benchmark.txt" % benchmark_dir
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["genotypegvcfs_threads"],
+        time=config["genotypegvcfs_time"],
+        mem=config["genotypegvcfs_mem_mb"],
+    threads: config["genotypegvcfs_threads"]
+    shell:
+        " gatk --java-options '-Xmx{resources.mem}m' GenotypeGVCFs -R {input.reference} "
+        " -G StandardAnnotation -G AS_StandardAnnotation"
+        " -V gendb://{input.database}"
+        " -O {output}> {log.std} 2>&1"
+
