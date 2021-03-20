@@ -33,7 +33,7 @@ def metaopen(filename, flags, buffering=None):
 
 
 def check_gvcf_integrity(gvcf_file, reference_fai, output_prefix):
-    len_df = read_csv(reference_fai, sep="\t", header=None, usecols=[0, 1], names=["scaffold", "length"])
+    len_df = read_csv(reference_fai, sep="\t", header=None, usecols=[0, 1], names=["scaffold", "length"], index_col=0)
 
     scaffold_dict = OrderedDict()
 
