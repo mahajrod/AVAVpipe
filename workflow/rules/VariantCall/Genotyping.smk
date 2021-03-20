@@ -24,7 +24,7 @@ rule haplotypecaller_gvcf:
     shell:
         "gatk --java-options '-Xmx{resources.mem}m' HaplotypeCaller -R {input.reference} -L {input.region} "
         " -ERC GVCF -G StandardAnnotation -G AS_StandardAnnotation -G StandardHCAnnotation"
-        " -I {input.bam} -O {output.table} > {log.std} 2>&1"
+        " -I {input.bam} -O {output} > {log.std} 2>&1"
 
 rule merge_splited_gvcf:
     input:
