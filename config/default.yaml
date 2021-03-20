@@ -6,6 +6,7 @@ filtered_read_dir: "reads/filtered"
 kmer_dir: "kmer"
 alignment_dir: "alignment"
 snpcall_dir: "snpcall"
+joint_snpcall_dir: "joint_snpcall"
 log_dir: "logs"
 cluster_log_dir: "cluster_logs"
 error_dir: "errors"
@@ -32,6 +33,8 @@ gatherbsqrreports_threads: 1
 applybsqr_threads: 1
 haplotypecaller_threads: 1
 merge_splited_gvcf_threads: 1
+genomicsdbimport_interval_threads: 13
+genomicsdbimport_reader_threads: 13
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
@@ -51,6 +54,7 @@ gatherbsqrreports_mem_mb: 6000
 applybsqr_mem_mb: 40000 #
 haplotypecaller_mem_mb: 20000 #
 merge_splited_gvcf_mem_mb: 20000
+genomicsdbimport_mem_mb: 50000
 #---- Tool time ----
 faidx_time: "00:30:00"
 dict_time: "00:30:00"
@@ -67,13 +71,14 @@ gatherbsqrreports_time: "2:00:00"
 applybsqr_time: "24:00:00"
 haplotypecaller_time: "10:00:00"
 merge_splited_gvcf_time: "12:00:00"
+genomicsdbimport_time: "12:00:00"
 #---- Tool variables ----
 trimmomatic_adapters: "resources/adapters/TruSeq2-PE.fa"
 reference:              #SET!!!!!!!!!!
 mosdepth_min_mapping_quality: 20
 jellyfish_kmer_length: 23
 split_regions_max_region_length: 25000000
-split_regions_max_seq_number: 400
+split_regions_max_seq_number: 100
 split_regions_region_file_format: "GATK"
 split_regions_min_scaffold_length: 1
 #split_regions_scaffold_whitelist: ""
