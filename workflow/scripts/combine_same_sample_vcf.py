@@ -12,7 +12,7 @@ parser.add_argument("-f", "--path_file", action="store", dest="path_file", requi
                     type=lambda path_file: read_csv(path_file, sep="\t", squeeze=True, header=None),
                     help="File with list of paths to vcf files (one path per line)")
 parser.add_argument("-o", "--output", action="store", dest="output",
-                    help="Output file")
+                    help="Output file with combined data")
 
 args = parser.parse_args()
 
