@@ -27,7 +27,7 @@ known_variants_dir_path = Path(config["known_variants_dir"])
 known_variants_vcf_list = list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz"))
 known_variants_mills_path = known_variants_dir_path / "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
 known_variants_axiompoly_path = known_variants_dir_path / "Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz"
-known_variants_dbsnp_path = known_variants_dir_path / "Homo_sapiens_assembly38.dbsnp138.vcf.gz"
+known_variants_dbsnp_path = known_variants_dir_path / "Homo_sapiens_assembly38.dbsnp138.vcf"
 known_variants_hapmap_path = known_variants_dir_path / "hapmap_3.3.hg38.vcf.gz"
 known_variants_omni_path = known_variants_dir_path / "1000G_omni2.5.hg38.vcf.gz"
 known_variants_1000g_path = known_variants_dir_path / "1000G_phase1.snps.high_confidence.hg38.vcf.gz"
@@ -72,7 +72,10 @@ rule all:
         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir / "gvcf_database"),
         joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz",
-        joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz"
+        joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz",
+        expand("%s/variantcalling_metrics_{variant_type}.log" % log_dir, varian_type=["snp", "indel"]),
+        expand(joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.varianteval", varian_type=["snp", "indel"])
+
 
 
 include: "workflow/rules/Preprocessing/Reference.smk"
@@ -85,3 +88,4 @@ include: "workflow/rules/Alignment/Coverage.smk"
 include: "workflow/rules/VariantCall/BQSR.smk"
 include: "workflow/rules/VariantCall/Genotyping.smk"
 include: "workflow/rules/VariantCall/VQSR.smk"
+include: "workflow/rules/Evaluation/Evaluation.smk"
