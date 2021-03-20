@@ -42,6 +42,8 @@ variantrecalibrator_indel_threads: 1
 variantrecalibrator_snp_threads: 1
 applyvsqr_indel_threads: 1
 applyvsqr_snp_threads: 1
+variantcalling_metrics_threads: 1
+varianteval_metrics_threads: 1
 #---- Tool memory ---- #TODO: adjust memory requirements
 faidx_mem_mb: 1000
 dict_mem_mb: 1000
@@ -69,6 +71,8 @@ variantrecalibrator_indel_mem_mb: 100000
 variantrecalibrator_snp_mem_mb: 100000
 applyvsqr_indel_mem_mb: 100000
 applyvsqr_snp_mem_mb: 100000
+variantcalling_metrics_mem_mb: 10000
+varianteval_metrics_mem_mb: 10000
 #---- Tool time ----
 faidx_time: "00:30:00"
 dict_time: "00:30:00"
@@ -93,6 +97,8 @@ variantrecalibrator_indel_time: "48:00:00"
 variantrecalibrator_snp_time: "48:00:00"
 applyvsqr_indel_time: "48:00:00"
 applyvsqr_snp_time: "48:00:00"
+variantcalling_metrics_time: "05:00:00"
+varianteval_metrics_time: "05:00:00"
 #---- Tool variables ----
 trimmomatic_adapters: "resources/adapters/TruSeq2-PE.fa"
 reference:              #SET!!!!!!!!!!
