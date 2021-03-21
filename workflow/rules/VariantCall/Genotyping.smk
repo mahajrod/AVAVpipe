@@ -124,7 +124,7 @@ rule genomicsdbimport:
         sample_file=rules.create_sample_file.output,
         interval_file=rule.prepare_whitelist_intervals.output
     output:
-        directory(joint_snpcall_dir / "gvcf_database")
+        joint_snpcall_dir / "gvcf_database/callset.json"
     params:
         batch_size=50,
         reader_threads=config["genomicsdbimport_reader_threads"],
