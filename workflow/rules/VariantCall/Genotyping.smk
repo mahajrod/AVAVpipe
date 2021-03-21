@@ -8,8 +8,6 @@ rule haplotypecaller_gvcf:
         reference=config["reference"],
     output:
         gvcf=temp("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir)
-    params:
-        ""
     log:
         std="%s/{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.log" % log_dir,
         cluster_log="%s/haplotypecaller_gvcf/{sample_id}.haplotypecaller_gvcf.region_{region_id}.cluster.log" % config["cluster_log_dir"],
