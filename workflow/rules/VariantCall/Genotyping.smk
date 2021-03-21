@@ -1,5 +1,6 @@
 localrules: create_sample_file
 
+"""
 rule haplotypecaller_gvcf:
     input:
         region="%s/intervals/region_{region_id}.list" % reference_region_dir_path,
@@ -84,7 +85,7 @@ rule create_sample_file:
         with open(output.sample_file, "w") as out_fd:
             for sample in config["sample_list"]:
                 out_fd.write("{0}\t{1}/{0}/{0}.gvcf\n".format(sample, str(snpcall_dir)))
-"""
+
 rule genomicsdbimport:
     input:
         gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"]),
