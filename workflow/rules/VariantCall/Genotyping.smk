@@ -1,6 +1,6 @@
 localrules: create_sample_file
 
-"""
+
 rule haplotypecaller_gvcf:
     input:
         region="%s/intervals/region_{region_id}.list" % reference_region_dir_path,
@@ -55,7 +55,7 @@ rule merge_splited_gvcf:
         "ls {params.input_files} | sort -V > {params.splited_gvcf_list}; "
         " workflow/scripts/combine_same_sample_vcf.py -f {params.splited_gvcf_list} -o {output} > {log.std} 2>&1"
 
- rule index_merged_gvcf:
+rule index_merged_gvcf:
     input:
         rules.merge_splited_gvcf.output
     output:
@@ -143,4 +143,3 @@ rule genotypegvcfs:
         " -G StandardAnnotation -G AS_StandardAnnotation"
         " -V gendb://{input.database}"
         " -O {output} > {log.std} 2>&1"
-"""
