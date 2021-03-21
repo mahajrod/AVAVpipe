@@ -54,9 +54,38 @@ rule merge_splited_gvcf:
     threads: config["merge_splited_gvcf_threads"]
     shell:
         "ls {params.input_files} | sort -V > {params.splited_gvcf_list}; "
+        " workflow/scripts/combine_same_sample_vcf.py -f {params.splited_gvcf_list} -o {output} > {log.std} 2>&1"
+
+"""
+rule merge_splited_gvcf:
+    input:
+        lambda wildcards:  expand("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir,
+                                  region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
+                                  sample_id=[wildcards.sample_id])
+    output:
+        "%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir
+    params:
+        input_files="%s/{sample_id}/haplotypecaller_gvcf/*.gvcf" % snpcall_dir,
+        splited_gvcf_list="%s/{sample_id}/{sample_id}.splited_gvf_list" % snpcall_dir,
+        reference_dict=reference_dict_path
+    log:
+        std="%s/{sample_id}.merge_splited_gvcf.log" % log_dir,
+        cluster_log="%s/{sample_id}.merge_splited_gvcf.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.merge_splited_gvcf.cluster.err" % config["cluster_log_dir"]
+    benchmark:
+        "%s/{sample_id}/merge_splited_gvcf.benchmark.txt" % benchmark_dir
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["merge_splited_gvcf_threads"],
+        time=config["merge_splited_gvcf_time"],
+        mem=config["merge_splited_gvcf_mem_mb"],
+    threads: config["merge_splited_gvcf_threads"]
+    shell:
+        "ls {params.input_files} | sort -V > {params.splited_gvcf_list}; "
         " picard -Xmx{resources.mem}m MergeVcfs -I {params.splited_gvcf_list} -O {output} "
         " -D {params.reference_dict}> {log.std} 2>&1"
-
+"""
 rule create_sample_file:
     input:
          expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"])
