@@ -12,17 +12,6 @@ log_dir = out_dir_path / config["log_dir"]
 error_dir  = out_dir_path / config["error_dir"]
 benchmark_dir =  out_dir_path / config["benchmark_dir"]
 
-"""
-fastqc_dir = "{0}/{1}".format(config["out_dir"], config["fastqc_dir"])
-kmer_dir = "{0}/{1}".format(config["out_dir"], config["kmer_dir"])
-filtered_read_dir = "{0}/{1}".format(config["out_dir"], config["filtered_read_dir"])
-alignment_dir = "{0}/{1}".format(config["out_dir"], config["alignment_dir"])
-snpcall_dir = "{0}/{1}".format(config["out_dir"], config["snpcall_dir"])
-log_dir = "{0}/{1}".format(config["out_dir"], config["log_dir"])
-error_dir  = "{0}/{1}".format(config["out_dir"], config["error_dir"])
-benchmark_dir =  "{0}/{1}".format(config["out_dir"], config["benchmark_dir"])
-"""
-
 known_variants_dir_path = Path(config["known_variants_dir"])
 known_variants_vcf_list = list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz"))
 known_variants_mills_path = known_variants_dir_path / "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
@@ -49,7 +38,6 @@ reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
     config["sample_list"] = [d.name for d in sample_dir_path.iterdir() if d.is_dir()]
-
 
 localrules: all
 
