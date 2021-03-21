@@ -39,7 +39,7 @@ rule index_bam:
     input:
         rules.bwa_map.output.bam
     output:
-        "%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir
+        temp("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir)
     log:
         std="%s/{sample_id}/index.log" % log_dir,
         cluster_log="%s/{sample_id}.index.cluster.log" % config["cluster_log_dir"],
