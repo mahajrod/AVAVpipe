@@ -39,21 +39,17 @@ reference_fai_path = Path(str(reference_path) + ".fai")
 reference_dict_path = reference_dir_path / (reference_path.stem + ".dict")
 reference_blacklist_path = reference_dir_path / (reference_path.stem + ".blacklist")
 reference_whitelist_path = reference_dir_path / (reference_path.stem + ".whitelist")
-reference_whitelist_intervals_path = reference_dir_path / (reference_path.stem + ".whitelist.intervals")
+
 reference_genotyping_whitelist_path = reference_dir_path / (reference_path.stem + ".genotyping.whitelist")
+reference_genotyping_whitelist_intervals_path = reference_dir_path / (reference_path.stem + ".genotyping.whitelist.intervals")
+
 reference_region_dir_path = reference_dir_path / "recalibration_regions"
 reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_region.correspondence"
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
-
     config["sample_list"] = [d.name for d in sample_dir_path.iterdir() if d.is_dir()]
-    #samples = []
-    #for entry in os.scandir(config["sample_dir"]):
-    #    if entry.is_dir():
-    #        samples.append(entry.name)
-    #
-    #config["sample_list"] = samples
+
 
 localrules: all
 
@@ -62,7 +58,7 @@ rule all:
         reference_fai_path,
         reference_dict_path,
         reference_region_correspondence_path,
-        reference_whitelist_intervals_path,
+        reference_genotyping_whitelist_intervals_path,
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),

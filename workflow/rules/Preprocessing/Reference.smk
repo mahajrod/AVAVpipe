@@ -47,9 +47,9 @@ rule ref_dict:
 rule prepare_whitelist_intervals:
     input:
         fai=rules.ref_faidx.output,
-        whitelist=reference_whitelist_path
+        whitelist=reference_genotyping_whitelist_path
     output:
-        reference_whitelist_intervals_path
+        reference_genotyping_whitelist_intervals_path
     log:
         std="%s/prepare_whitelist_intervals.log" % log_dir,
         cluster_log="%s/prepare_whitelist_intervals.cluster.log" % config["cluster_log_dir"],
