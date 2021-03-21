@@ -56,7 +56,7 @@ rule all:
         #expand("%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"] ),
-        joint_snpcall_dir / "gvcf_database/callset.json",
+        directory(joint_snpcall_dir / "gvcf_database/callset.json"),
         joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz",
         joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz",
         expand("%s/variantcalling_metrics_{variant_type}.log" % log_dir, variant_type=["snp", "indel"]),
