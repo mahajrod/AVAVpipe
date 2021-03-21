@@ -84,7 +84,7 @@ rule create_sample_file:
         with open(output.sample_file, "w") as out_fd:
             for sample in config["sample_list"]:
                 out_fd.write("{0}\t{1}/{0}/{0}.gvcf\n".format(sample, str(snpcall_dir)))
-
+"""
 rule genomicsdbimport:
     input:
         gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"]),
@@ -142,3 +142,4 @@ rule genotypegvcfs:
         " -G StandardAnnotation -G AS_StandardAnnotation"
         " -V gendb://{input.database}"
         " -O {output} > {log.std} 2>&1"
+"""
