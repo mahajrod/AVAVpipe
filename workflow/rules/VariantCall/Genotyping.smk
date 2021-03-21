@@ -56,6 +56,27 @@ rule merge_splited_gvcf:
         "ls {params.input_files} | sort -V > {params.splited_gvcf_list}; "
         " workflow/scripts/combine_same_sample_vcf.py -f {params.splited_gvcf_list} -o {output} > {log.std} 2>&1"
 
+ rule index_merged_gvcf:
+    input:
+        rules.merge_splited_gvcf.output
+    output:
+        "%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir
+    log:
+        std="%s/{sample_id}.index_merged_gvcf.log" % log_dir,
+        cluster_log="%s/{sample_id}.index_merged_gvcf.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/{sample_id}.index_merged_gvcf.cluster.err" % config["cluster_log_dir"]
+    benchmark:
+        "%s/{sample_id}/index_merged_gvcf.benchmark.txt" % benchmark_dir
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["index_merged_gvcf_threads"],
+        time=config["index_merged_gvcf_time"],
+        mem=config["index_merged_gvcf_mem_mb"],
+    threads: config["index_merged_gvcf_threads"]
+    shell:
+        "gatk --java-options '-Xmx{resources.mem}m' IndexFeatureFile -I ${input} > {log.std} 2>&1"
+
 """
 rule merge_splited_gvcf:
     input:
@@ -99,14 +120,15 @@ rule create_sample_file:
 rule genomicsdbimport:
     input:
         gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"]),
-        sample_file=rules.create_sample_file.output
+        gvcf_indexes=expand("%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir, sample_id=config["sample_list"]),
+        sample_file=rules.create_sample_file.output,
+        interval_file=rule.prepare_whitelist_intervals.output
     output:
         directory(joint_snpcall_dir / "gvcf_database")
     params:
         batch_size=50,
         reader_threads=config["genomicsdbimport_reader_threads"],
         interval_threads=config["genomicsdbimport_interval_threads"],
-        interval_list=reference_genotyping_whitelist_path
     log:
         std="%s/genomicsdbimport.log" % log_dir,
         cluster_log="%s/genomicsdbimport.cluster.log" % config["cluster_log_dir"],
@@ -126,7 +148,7 @@ rule genomicsdbimport:
         " --max-num-intervals-to-import-in-parallel {params.interval_threads}"
         " --reader-threads {params.reader_threads}"
         " --genomicsdb-workspace-path {output} "
-        " -L {params.interval_list}> {log.std} 2>&1"
+        " -L {input.interval_file} > {log.std} 2>&1"
 
 rule genotypegvcfs:
     input:
@@ -151,5 +173,5 @@ rule genotypegvcfs:
         " gatk --java-options '-Xmx{resources.mem}m' GenotypeGVCFs -R {input.reference} "
         " -G StandardAnnotation -G AS_StandardAnnotation"
         " -V gendb://{input.database}"
-        " -O {output}> {log.std} 2>&1"
+        " -O {output} > {log.std} 2>&1"
 

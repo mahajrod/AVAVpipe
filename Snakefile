@@ -36,12 +36,13 @@ sample_dir_path = Path(config["sample_dir"])
 reference_path = Path(config["reference"])
 reference_dir_path = reference_path.parent
 reference_fai_path = Path(str(reference_path) + ".fai")
-reference_dict_path = reference_dir_path.joinpath(reference_path.stem + ".dict")
-reference_blacklist_path = reference_dir_path.joinpath(reference_path.stem + ".blacklist")
-reference_whitelist_path = reference_dir_path.joinpath(reference_path.stem + ".whitelist")
-reference_genotyping_whitelist_path = reference_dir_path.joinpath(reference_path.stem + ".genotyping.whitelist")
-reference_region_dir_path = reference_dir_path.joinpath("recalibration_regions")
-reference_region_correspondence_path = reference_region_dir_path.joinpath("scaffold_to_region.correspondence")
+reference_dict_path = reference_dir_path / (reference_path.stem + ".dict")
+reference_blacklist_path = reference_dir_path / (reference_path.stem + ".blacklist")
+reference_whitelist_path = reference_dir_path / (reference_path.stem + ".whitelist")
+reference_whitelist_intervals_path = reference_dir_path / (reference_path.stem + ".whitelist.intervals")
+reference_genotyping_whitelist_path = reference_dir_path / (reference_path.stem + ".genotyping.whitelist")
+reference_region_dir_path = reference_dir_path / "recalibration_regions"
+reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_region.correspondence"
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
@@ -58,9 +59,10 @@ localrules: all
 
 rule all:
     input:
-        reference_fai_path, #"{0}.fai".format(config["reference"]),
-        reference_dict_path, #"{0}.dict".format(os.path.splitext(config["reference"])[0]),
-        reference_region_correspondence_path, #"%s/regions/scaffold_to_region.correspondence" % os.path.dirname(config["reference"]),
+        reference_fai_path,
+        reference_dict_path,
+        reference_region_correspondence_path,
+        reference_whitelist_intervals_path,
         expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
@@ -68,7 +70,7 @@ rule all:
         expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
         expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
+        #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir / "gvcf_database"),
         joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz",

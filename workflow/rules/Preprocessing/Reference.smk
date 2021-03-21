@@ -26,7 +26,7 @@ rule ref_dict:
     input:
         config["reference"]
     output:
-        reference_dict_path #"%s.dict" % (os.path.splitext(config["reference"])[0])
+        reference_dict_path
     log:
         std="%s/dict.log" % log_dir,
         cluster_log="%s/dict.cluster.log" % config["cluster_log_dir"],
@@ -44,21 +44,42 @@ rule ref_dict:
     shell:
          "picard CreateSequenceDictionary -R {input} > {log.std} 2>&1"
 
+rule prepare_whitelist_intervals:
+    input:
+        fai=rules.ref_faidx.output,
+        whitelist=reference_whitelist_path
+    output:
+        reference_whitelist_intervals_path
+    log:
+        std="%s/prepare_whitelist_intervals.log" % log_dir,
+        cluster_log="%s/prepare_whitelist_intervals.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/prepare_whitelist_intervals.cluster.err" % config["cluster_log_dir"]
+    benchmark:
+        "%s/prepare_whitelist_intervals.benchmark.txt" % benchmark_dir
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["prepare_whitelist_intervals_threads"],
+        time=config["prepare_whitelist_intervals_time"],
+        mem=config["prepare_whitelist_intervals_mem_mb"],
+    threads:
+        config["prepare_whitelist_intervals_threads"]
+    shell:
+         "workflow/scripts/fai2intervals.py -f {input.fai} -w {input.whitelist} -o {output} > {log.std} 2>&1"
+
 rule prepare_recalibration_regions:
     input:
          fai=rules.ref_faidx.output,
-         blacklist=reference_blacklist_path, #"%s.blacklist" % (os.path.splitext(config["reference"])[0]),
-         whitelist=reference_whitelist_path, #"%s.whitelist" % (os.path.splitext(config["reference"])[0])
+         blacklist=reference_blacklist_path,
+         whitelist=reference_whitelist_path
     output:
-         reference_region_correspondence_path #"%s/regions/scaffold_to_region.correspondence" % os.path.dirname(config["reference"])
+         reference_region_correspondence_path
     params:
         max_region_length=config["split_regions_max_region_length"],
         max_seq_number=config["split_regions_max_seq_number"],
         region_file_format=config["split_regions_region_file_format"],
         min_scaffold_length=config["split_regions_min_scaffold_length"],
-        #scaffold_whitelist=config["split_regions_scaffold_whitelist"],
-        #scaffold_blacklist=config["split_regions_scaffold_blacklist"],
-        output_dir=reference_region_dir_path #"%s/regions/" % os.path.dirname(config["reference"])
+        output_dir=reference_region_dir_path
     log:
         std="%s/prepare_regions.log" % log_dir,
         cluster_log="%s/prepare_regions.cluster.log" % config["cluster_log_dir"],
