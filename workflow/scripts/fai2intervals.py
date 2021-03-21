@@ -28,6 +28,7 @@ def metaopen(filename, flags, buffering=None):
         else:
             return open(filename, flags)
 
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-f", "--fai", action="store", dest="fai", required=True,
@@ -39,9 +40,11 @@ parser.add_argument("-o", "--output", action="store", dest="output",
                     help="Output file with intervals")
 
 args = parser.parse_args()
-
+print(args.scaffold_whitelist)
 with metaopen(args.fai, "r") as in_fd, metaopen(args.output, "w") as out_fd:
     for line in in_fd:
         scaf, end = line.split("\t")[:2]
+        print(scaf)
         if scaf in args.scaffold_whitelist:
+            print("AAAAA")
             out_fd.write("{0}:1-{1}\n".format(scaf, end))
