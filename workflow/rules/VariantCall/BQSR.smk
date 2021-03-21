@@ -51,7 +51,6 @@ rule gatherbsqrreports:
         "ls {params.input_files} | sort -V > {params.recal_table_list}; "
         "gatk --java-options '-Xmx{resources.mem}m' GatherBQSRReports -I {params.recal_table_list} -O {output} > {log.std} 2>&1"
 
-
 rule applybsqr:
     input:
         bam=rules.bwa_map.output.bam,
