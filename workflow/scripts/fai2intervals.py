@@ -45,6 +45,7 @@ with metaopen(args.fai, "r") as in_fd, metaopen(args.output, "w") as out_fd:
     for line in in_fd:
         scaf, end = line.split("\t")[:2]
         print(scaf)
+        print(scaf in args.scaffold_whitelist)
         if scaf in args.scaffold_whitelist:
             print("AAAAA")
             out_fd.write("{0}:1-{1}\n".format(scaf, end))
