@@ -91,7 +91,7 @@ rule genomicsdbimport:
         gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"]),
         gvcf_indexes=expand("%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir, sample_id=config["sample_list"]),
         sample_file=rules.create_sample_file.output,
-        interval_file=rule.prepare_genotyping_whitelist_intervals.output
+        interval_file=rules.prepare_genotyping_whitelist_intervals.output
     output:
         joint_snpcall_dir / "gvcf_database/callset.json"
     params:
