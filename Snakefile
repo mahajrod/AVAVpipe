@@ -71,8 +71,8 @@ rule all:
         expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir_path / "gvcf_database/callset.json"),
         joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz",
-        expand(joint_snpcall_per_sample_dir_path/ "{sample_id}.recalibrated.good.vcf.gz", sample_id=config["sample_list"])
-        joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_summary_metrics",
+        expand(joint_snpcall_per_sample_dir_path/ "{sample_id}.recalibrated.good.vcf.gz", sample_id=config["sample_list"]),
+        joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_summary_metrics"
         #joint_snpcall_dir_path / "all_samples.recalibrated.good.varianteval",
 
 
