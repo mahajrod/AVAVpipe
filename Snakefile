@@ -57,11 +57,9 @@ rule all:
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir / "gvcf_database/callset.json"),
-        joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz",
-        joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz",
-        expand("%s/variantcalling_metrics_{variant_type}.log" % log_dir, variant_type=["snp", "indel"]),
-        expand(joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.varianteval", variant_type=["snp", "indel"])
-
+        joint_snpcall_dir / "all_samples.recalibrated.vcf.gz",
+        log_dir /"variantcalling_metrics.log",
+        joint_snpcall_dir / "all_samples.recalibrated.varianteval",
 
 
 include: "workflow/rules/Preprocessing/Reference.smk"

@@ -134,7 +134,7 @@ rule applyvsqr_indel:
         recal_table=rules.variantrecalibrator_indel.output.recal_table,
         vcf=rules.excess_filter.output
     output:
-        joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz"
+        temp(joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz")
     params:
         mode="INDEL",
         truth_sensitivity_filter_level=99.7,
@@ -163,9 +163,9 @@ rule applyvsqr_snp:
     input:
         tranches=rules.variantrecalibrator_snp.output.tranches,
         recal_table=rules.variantrecalibrator_snp.output.recal_table,
-        vcf=rules.excess_filter.output
+        vcf=rules.applyvsqr_indel.output
     output:
-        joint_snpcall_dir / "all_samples.snp.recalibrated.vcf.gz"
+        joint_snpcall_dir / "all_samples.recalibrated.vcf.gz"
     params:
         mode="SNP",
         truth_sensitivity_filter_level=99.7,

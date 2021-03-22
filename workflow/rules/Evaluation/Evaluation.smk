@@ -1,18 +1,18 @@
 rule variantcalling_metrics:
     input:
-        vcf=joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.vcf.gz",
+        vcf=rules.applyvsqr_snp.output,
         dbsnp=known_variants_dbsnp_path,
         reference_dict=reference_dict_path
     output:
-        "%s/variantcalling_metrics_{variant_type}.log" % log_dir
+        log_dir /"variantcalling_metrics.log"
     params:
-        output_prefix=joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.metrics"
+        output_prefix=joint_snpcall_dir / "all_samples.recalibrated.metrics"
     log:
-        std="%s/variantcalling_metrics_{variant_type}.log" % log_dir,
-        cluster_log="%s/variantcalling_metrics_{variant_type}cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/variantcalling_metrics_{variant_type}.cluster.err" % config["cluster_log_dir"]
+        std="%s/variantcalling_metrics.log" % log_dir,
+        cluster_log="%s/variantcalling_metrics.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/variantcalling_metrics_.cluster.err" % config["cluster_log_dir"]
     benchmark:
-        "%s/variantcalling_metrics_{variant_type}.benchmark.txt" % benchmark_dir
+        "%s/variantcalling_metrics.benchmark.txt" % benchmark_dir
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -27,19 +27,19 @@ rule variantcalling_metrics:
 
 rule varianteval:
     input:
-        vcf=joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.vcf.gz",
+        vcf=rules.applyvsqr_snp.output,
         dbsnp=known_variants_dbsnp_path,
         reference_=reference_path
     output:
-        joint_snpcall_dir / "all_samples.{variant_type}.recalibrated.varianteval"
+        joint_snpcall_dir / "all_samples.recalibrated.varianteval"
     params:
         metrics=" -noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary "
     log:
-        std="%s/varianteval_metrics_{variant_type}.log" % log_dir,
-        cluster_log="%s/varianteval_metrics_{variant_type}cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/varianteval_metrics_{variant_type}.cluster.err" % config["cluster_log_dir"]
+        std="%s/varianteval_metrics.log" % log_dir,
+        cluster_log="%s/varianteval_metrics.cluster.log" % config["cluster_log_dir"],
+        cluster_err="%s/varianteval_metrics.cluster.err" % config["cluster_log_dir"]
     benchmark:
-        "%s/varianteval_metrics_{variant_type}.benchmark.txt" % benchmark_dir
+        "%s/varianteval_metrics.benchmark.txt" % benchmark_dir
     conda:
         "../../%s" % config["conda_config"]
     resources:
