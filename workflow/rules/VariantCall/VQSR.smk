@@ -81,9 +81,9 @@ rule variantrecalibrator_indel:
         " gatk --java-options '-Xmx{resources.mem}m' VariantRecalibrator "
         " -V {input.vcf} --trust-all-polymorphic -mode {params.mode} --max-gaussians {params.max_gaussians}"
         " {params.tranche} {params.annotations}"
-        " -resource:{params.mills}:{params.mills_path}"
-        " -resource:{params.axiompoly}:{params.axiompoly_path}"
-        " -resource:{params.dbsnp}:{params.dbsnp_path}"
+        " -resource {params.mills}:{params.mills_path}"
+        " -resource {params.axiompoly}:{params.axiompoly_path}"
+        " -resource {params.dbsnp}:{params.dbsnp_path}"
         " -O {output.recal_table} --tranches-file {output.tranches} > {log.std} 2>&1"
 
 rule variantrecalibrator_snp:
@@ -122,10 +122,10 @@ rule variantrecalibrator_snp:
         " gatk --java-options '-Xmx{resources.mem}m' VariantRecalibrator "
         " -V {input.vcf} --trust-all-polymorphic -mode {params.mode} --max-gaussians {params.max_gaussians}"
         " {params.tranche} {params.annotations}"
-        " -resource:{params.hapmap}:{params.hapmap_path}"
-        " -resource:{params.omni}:{params.omni_path}"
-        " -resource:{params.g1000}:{params.g1000_path}"
-        " -resource:{params.dbsnp}:{params.dbsnp_path}"
+        " -resource {params.hapmap}:{params.hapmap_path}"
+        " -resource {params.omni}:{params.omni_path}"
+        " -resource {params.g1000}:{params.g1000_path}"
+        " -resource {params.dbsnp}:{params.dbsnp_path}"
         " -O {output.recal_table} --tranches-file {output.tranches} > {log.std} 2>&1"
 
 rule applyvsqr_indel:
