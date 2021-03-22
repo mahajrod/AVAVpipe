@@ -1,6 +1,6 @@
 rule variantcalling_metrics:
     input:
-        vcf=rules.select_good_variants.output.vcf
+        vcf=rules.select_good_variants.output.vcf,
         dbsnp=known_variants_dbsnp_path,
         reference_dict=reference_dict_path
     output:
