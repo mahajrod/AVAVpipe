@@ -26,12 +26,12 @@ cluster_log_dir_path = Path(config["cluster_log_dir"])
 
 known_variants_dir_path = Path(config["known_variants_dir"])
 known_variants_vcf_list = list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz"))
-known_variants_mills_path = known_variants_dir_path / "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
-known_variants_axiompoly_path = known_variants_dir_path / "Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz"
-known_variants_dbsnp_path = known_variants_dir_path / "Homo_sapiens_assembly38.dbsnp138.vcf"
-known_variants_hapmap_path = known_variants_dir_path / "hapmap_3.3.hg38.vcf.gz"
-known_variants_omni_path = known_variants_dir_path / "1000G_omni2.5.hg38.vcf.gz"
-known_variants_1000g_path = known_variants_dir_path / "1000G_phase1.snps.high_confidence.hg38.vcf.gz"
+known_variants_mills_path = known_variants_dir_path / config["mills_vcf"] #"Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+known_variants_axiompoly_path = known_variants_dir_path / config["axiompoly_vcf"] #"Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz"
+known_variants_dbsnp_path = known_variants_dir_path / config["dbsnp_vcf"] #"Homo_sapiens_assembly38.dbsnp138.vcf"
+known_variants_hapmap_path = known_variants_dir_path / config["hapmap_vcf"] #"hapmap_3.3.hg38.vcf.gz"
+known_variants_omni_path = known_variants_dir_path / config["omni_vcf"] #"1000G_omni2.5.hg38.vcf.gz"
+known_variants_1000g_path = known_variants_dir_path / config["g1000_vcf"] #"1000G_phase1.snps.high_confidence.hg38.vcf.gz"
 
 sample_dir_path = Path(config["sample_dir"])
 reference_path = Path(config["reference"])
@@ -46,7 +46,6 @@ reference_genotyping_whitelist_intervals_path = reference_dir_path / (reference_
 
 reference_region_dir_path = reference_dir_path / "recalibration_regions"
 reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_region.correspondence"
-
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
