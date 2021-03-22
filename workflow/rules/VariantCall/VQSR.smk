@@ -5,7 +5,7 @@ rule excess_filter:
     output:
         joint_snpcall_dir / "all_samples.excesshet.vcf.gz"
     params:
-        filter="ExcessHet > 54.69",
+        filter="'ExcessHet > 54.69'",
         filter_name="ExcessHet"
     log:
         std="%s/excess_filter.log" % log_dir,
