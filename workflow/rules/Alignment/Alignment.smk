@@ -1,26 +1,26 @@
 rule bwa_map:
     input:
-        forward_reads=rules.trimmomatic.output.pe_forward, #"%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir,
-        reverse_reads=rules.trimmomatic.output.pe_reverse,#"%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir
+        forward_reads=rules.trimmomatic.output.pe_forward,
+        reverse_reads=rules.trimmomatic.output.pe_reverse,
         reference=config["reference"]
     output:
-        bam=temp("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir)
+        bam=temp(alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.bam")
     params:
         fixmate_threads=config["fixmate_threads"],
         sort_threads=config["sort_threads"],
         markdup_threads=config["markdup_threads"],
         bwa_threads=config["bwa_threads"],
         per_thread_sort_mem="%sG" % config["per_thread_sort_mem"],
-        tmp_prefix="%s/{sample_id}/{sample_id}" % alignment_dir
+        tmp_prefix=alignment_dir_path / "{sample_id}/{sample_id}"
     log:
-        bwa="%s/{sample_id}/bwa.log" % log_dir,
-        fixmate="%s/{sample_id}/fixmate.log" % log_dir,
-        sort="%s/{sample_id}/sort.log" % log_dir,
-        markdup="%s/{sample_id}/markdup.log" % log_dir,
-        cluster_log="%s/{sample_id}.map.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.map.cluster.err" % config["cluster_log_dir"]
+        bwa=log_dir_path / "{sample_id}/bwa.log",
+        fixmate=log_dir_path / "{sample_id}/fixmate.log",
+        sort=log_dir_path / "{sample_id}/sort.log",
+        markdup=log_dir_path / "{sample_id}/markdup.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.map.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.map.cluster.err"
     benchmark:
-        "%s/{sample_id}/alignment.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/alignment.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -39,13 +39,13 @@ rule index_bam:
     input:
         rules.bwa_map.output.bam
     output:
-        temp("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir)
+        temp(alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.bam.bai")
     log:
-        std="%s/{sample_id}/index.log" % log_dir,
-        cluster_log="%s/{sample_id}.index.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.index.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/index.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.index.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.index.cluster.err"
     benchmark:
-        "%s/{sample_id}/index.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/index.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

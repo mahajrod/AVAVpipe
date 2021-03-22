@@ -3,15 +3,15 @@ rule jellyfish_count:
         forward_reads=rules.trimmomatic.output.pe_forward, #"%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir,
         reverse_reads=rules.trimmomatic.output.pe_reverse,#"%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir
     output:
-        "%s/{sample_id}/{sample_id}.%i.jf" % (kmer_dir, config["jellyfish_kmer_length"])
+        kmer_dir_path / ("{sample_id}/{sample_id}.%i.jf" % config["jellyfish_kmer_length"])
     params:
         kmer_length=config["jellyfish_kmer_length"]
     log:
-        std="%s/{sample_id}/jellyfish_count.log" % log_dir,
-        cluster_log="%s/{sample_id}.jellyfish_count.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.jellyfish_count.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/jellyfish_count.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.jellyfish_count.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.jellyfish_count.cluster.err"
     benchmark:
-        "%s/{sample_id}/jellyfish_count.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/jellyfish_count.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -28,17 +28,17 @@ rule jellyfish_histo:
     input:
         rules.jellyfish_count.output
     output:
-        "%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"])
+        kmer_dir_path / ("{sample_id}/{sample_id}.%i.histo" % config["jellyfish_kmer_length"])
     params:
         min_coverage=1,
         max_coverage=100000000,
         increment=1
     log:
-        std="%s/{sample_id}/jellyfish_histo.log" % log_dir,
-        cluster_log="%s/{sample_id}.jellyfish_histo.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.jellyfish_histo.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/jellyfish_histo.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.jellyfish_histo.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.jellyfish_histo.cluster.err"
     benchmark:
-        "%s/{sample_id}/jellyfish_histo.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/jellyfish_histo.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

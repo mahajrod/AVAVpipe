@@ -6,11 +6,11 @@ rule ref_faidx:
     output:
         "%s.fai" % config["reference"]
     log:
-        std="%s/faidx.log" % log_dir,
-        cluster_log="%s/faidx.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/faidx.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "faidx.log",
+        cluster_log=cluster_log_dir_path / "faidx.cluster.log",
+        cluster_err=cluster_log_dir_path / "faidx.cluster.err"
     benchmark:
-        "%s/faidx.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "faidx.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -28,11 +28,11 @@ rule ref_dict:
     output:
         reference_dict_path
     log:
-        std="%s/dict.log" % log_dir,
-        cluster_log="%s/dict.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/dict.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "/dict.log",
+        cluster_log=cluster_log_dir_path / "dict.cluster.log",
+        cluster_err=cluster_log_dir_path / "dict.cluster.err"
     benchmark:
-        "%s/dict.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "dict.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -51,11 +51,11 @@ rule prepare_genotyping_whitelist_intervals:
     output:
         reference_genotyping_whitelist_intervals_path
     log:
-        std="%s/prepare_genotyping_whitelist_intervals.log" % log_dir,
-        cluster_log="%s/prepare_genotyping_whitelist_intervals.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/prepare_genotyping_whitelist_intervals.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "prepare_genotyping_whitelist_intervals.log",
+        cluster_log=cluster_log_dir_path / "prepare_genotyping_whitelist_intervals.cluster.log",
+        cluster_err=cluster_log_dir_path / "prepare_genotyping_whitelist_intervals.cluster.err"
     benchmark:
-        "%s/prepare_genotyping_whitelist_intervals.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "prepare_genotyping_whitelist_intervals.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -81,11 +81,11 @@ rule prepare_recalibration_regions:
         min_scaffold_length=config["split_regions_min_scaffold_length"],
         output_dir=reference_region_dir_path
     log:
-        std="%s/prepare_recalibration_regions.log" % log_dir,
-        cluster_log="%s/prepare_recalibration_regions.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/prepare_recalibration_regions.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "prepare_recalibration_regions.log",
+        cluster_log=cluster_log_dir_path / "prepare_recalibration_regions.cluster.log",
+        cluster_err=cluster_log_dir_path / "prepare_recalibration_regions.cluster.err"
     benchmark:
-        "%s/prepare_recalibration_regions.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "prepare_recalibration_regions.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

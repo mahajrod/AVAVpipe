@@ -1,7 +1,7 @@
 from pathlib import Path
 
 out_dir_path = Path(config["out_dir"])
-
+"""
 fastqc_dir = out_dir_path / config["fastqc_dir"]
 kmer_dir = out_dir_path / config["kmer_dir"]
 filtered_read_dir = out_dir_path / config["filtered_read_dir"]
@@ -11,6 +11,18 @@ joint_snpcall_dir = out_dir_path / config["joint_snpcall_dir"]
 log_dir = out_dir_path / config["log_dir"]
 error_dir  = out_dir_path / config["error_dir"]
 benchmark_dir =  out_dir_path / config["benchmark_dir"]
+"""
+
+fastqc_dir_path = out_dir_path / config["fastqc_dir"]
+kmer_dir_path = out_dir_path / config["kmer_dir"]
+filtered_read_dir_path = out_dir_path / config["filtered_read_dir"]
+alignment_dir_path = out_dir_path / config["alignment_dir"]
+snpcall_dir_path = out_dir_path / config["snpcall_dir"]
+joint_snpcall_dir_path = out_dir_path / config["joint_snpcall_dir"]
+log_dir_path = out_dir_path / config["log_dir"]
+error_dir_path  = out_dir_path / config["error_dir"]
+benchmark_dir_path =  out_dir_path / config["benchmark_dir"]
+cluster_log_dir_path = Path(config["cluster_log_dir"])
 
 known_variants_dir_path = Path(config["known_variants_dir"])
 known_variants_vcf_list = list(known_variants_dir_path.glob("*.vcf")) + list(known_variants_dir_path.glob("*.vcf.gz"))
@@ -47,19 +59,19 @@ rule all:
         reference_dict_path,
         reference_region_correspondence_path,
         reference_genotyping_whitelist_intervals_path,
-        expand("%s/{sample_id}/fastqc_raw.log" % log_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/fastqc_filtered.log" % log_dir, sample_id=config["sample_list"]),
+        expand(log_dir_path / "{sample_id}/fastqc_raw.log", sample_id=config["sample_list"]),
+        expand(log_dir_path / "{sample_id}/fastqc_filtered.log", sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir, sample_id=config["sample_list"]),
-        expand("%s/{sample_id}/{sample_id}.%i.histo" % (kmer_dir, config["jellyfish_kmer_length"]), sample_id=config["sample_list"]),
+        expand(alignment_dir_path / "{sample_id}/{sample_id}.coverage.per-base.bed.gz", sample_id=config["sample_list"]),
+        expand(kmer_dir_path / ("{sample_id}/{sample_id}.%i.histo" % config["jellyfish_kmer_length"]), sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.recal.table" % alignment_dir, sample_id=config["sample_list"]),
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
-        expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"] ),
-        directory(joint_snpcall_dir / "gvcf_database/callset.json"),
-        joint_snpcall_dir / "all_samples.recalibrated.vcf.gz",
-        log_dir /"variantcalling_metrics.log",
-        joint_snpcall_dir / "all_samples.recalibrated.varianteval",
+        expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"] ),
+        directory(joint_snpcall_dir_path / "gvcf_database/callset.json"),
+        joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz",
+        log_dir_path /"variantcalling_metrics.log",
+        joint_snpcall_dir_path / "all_samples.recalibrated.varianteval",
 
 
 include: "workflow/rules/Preprocessing/Reference.smk"

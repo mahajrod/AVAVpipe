@@ -1,18 +1,18 @@
 rule baserecalibrator:
     input:
-        region="%s/intervals/region_{region_id}.list" % reference_region_dir_path,
-        bam=rules.bwa_map.output.bam, #"%s/{sample_id}/{sample_id}.sorted.mkdup.bam" % alignment_dir,
-        bai=rules.index_bam.output, #"%s/{sample_id}/{sample_id}.sorted.mkdup.bam.bai" % alignment_dir,
+        region=reference_region_dir_path / "intervals/region_{region_id}.list",
+        bam=rules.bwa_map.output.bam,
+        bai=rules.index_bam.output,
         reference=config["reference"],
         known_variants_vcf_list=known_variants_vcf_list
     output:
-        table="%s/{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table" % alignment_dir
+        table=alignment_dir_path / "{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table"
     log:
-        std="%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log" % log_dir,
-        cluster_log="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.log",
+        cluster_log=cluster_log_dir_path / "baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.log",
+        cluster_err=cluster_log_dir_path / "baserecalibrator/{sample_id}.baserecalibrator.region_{region_id}.cluster.err"
     benchmark:
-        "%s/{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -26,20 +26,20 @@ rule baserecalibrator:
 
 rule gatherbsqrreports:
     input:
-        lambda wildcards:  expand("%s/{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table" % alignment_dir,
+        lambda wildcards:  expand("%s/{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table" % alignment_dir_path,
                                   region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
                                   sample_id=[wildcards.sample_id])
     output:
-        "%s/{sample_id}/{sample_id}.sorted.mkdup.recal.table" % alignment_dir
+        alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.recal.table"
     params:
-        input_files="%s/{sample_id}/baserecalibrator/*" % alignment_dir,
-        recal_table_list="%s/{sample_id}/{sample_id}.sorted.mkdup.recal.table.list" % alignment_dir
+        input_files=alignment_dir_path / "{sample_id}/baserecalibrator/*",
+        recal_table_list=alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.recal.table.list"
     log:
-        std="%s/{sample_id}.gatherbsqrreports.log" % log_dir,
-        cluster_log="%s/{sample_id}.gatherbsqrreports.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.gatherbsqrreports.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}.gatherbsqrreports.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.gatherbsqrreports.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.gatherbsqrreports.cluster.err"
     benchmark:
-        "%s/{sample_id}/gatherbsqrreports.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/gatherbsqrreports.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -57,14 +57,14 @@ rule applybsqr:
         reference=config["reference"],
         table=rules.gatherbsqrreports.output
     output:
-        bam="%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir,
-        bai="%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bai" %  alignment_dir
+        bam=alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam",
+        bai=alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bai"
     log:
-        std="%s/{sample_id}/applybsqr.log" % log_dir,
-        cluster_log="%s/{sample_id}.applybsqr.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.applybsqr.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/applybsqr.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.applybsqr.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.applybsqr.cluster.err"
     benchmark:
-        "%s/{sample_id}/applybsqr.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/applybsqr.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

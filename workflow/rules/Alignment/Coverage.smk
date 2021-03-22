@@ -3,16 +3,16 @@ rule mosdepth:
         bam=rules.bwa_map.output.bam,
         bai=rules.index_bam.output
     output:
-        "%s/{sample_id}/{sample_id}.coverage.per-base.bed.gz" % alignment_dir
+        alignment_dir_path / "{sample_id}/{sample_id}.coverage.per-base.bed.gz"
     params:
         min_mapping_quality=config["mosdepth_min_mapping_quality"],
-        output_pefix="%s/{sample_id}/{sample_id}.coverage" % alignment_dir
+        output_pefix=alignment_dir_path / "{sample_id}/{sample_id}.coverage"
     log:
-        std="%s/{sample_id}/mosdepth.log" % log_dir,
-        cluster_log="%s/{sample_id}.mosdepth.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.mosdepth.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/mosdepth.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.mosdepth.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.mosdepth.cluster.err"
     benchmark:
-        "%s/{sample_id}/mosdepth.benchmark.txt" % benchmark_dir
+         benchmark_dir_path / "{sample_id}/mosdepth.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

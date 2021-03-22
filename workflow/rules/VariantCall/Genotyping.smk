@@ -3,18 +3,18 @@ localrules: create_sample_file
 
 rule haplotypecaller_gvcf:
     input:
-        region="%s/intervals/region_{region_id}.list" % reference_region_dir_path,
+        region=reference_region_dir_path / "intervals/region_{region_id}.list",
         bam=rules.applybsqr.output.bam,
         bai=rules.applybsqr.output.bai,
         reference=config["reference"],
     output:
-        gvcf=temp("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir)
+        gvcf=temp(snpcall_dir_path / "{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf")
     log:
-        std="%s/{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.log" % log_dir,
-        cluster_log="%s/haplotypecaller_gvcf/{sample_id}.haplotypecaller_gvcf.region_{region_id}.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/haplotypecaller_gvcf/{sample_id}.haplotypecaller_gvcf.region_{region_id}.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.log",
+        cluster_log=cluster_log_dir_path / "/haplotypecaller_gvcf/{sample_id}.haplotypecaller_gvcf.region_{region_id}.cluster.log",
+        cluster_err=cluster_log_dir_path / "haplotypecaller_gvcf/{sample_id}.haplotypecaller_gvcf.region_{region_id}.cluster.err"
     benchmark:
-        "%s/{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -29,21 +29,21 @@ rule haplotypecaller_gvcf:
 
 rule merge_splited_gvcf:
     input:
-        lambda wildcards:  expand("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir,
+        lambda wildcards:  expand("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir_path,
                                   region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
                                   sample_id=[wildcards.sample_id])
     output:
-        "%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir
+        snpcall_dir_path / "{sample_id}/{sample_id}.gvcf"
     params:
-        input_files="%s/{sample_id}/haplotypecaller_gvcf/*.gvcf" % snpcall_dir,
-        splited_gvcf_list="%s/{sample_id}/{sample_id}.splited_gvf_list" % snpcall_dir,
+        input_files=snpcall_dir_path / "{sample_id}/haplotypecaller_gvcf/*.gvcf",
+        splited_gvcf_list=snpcall_dir_path / "{sample_id}/{sample_id}.splited_gvf_list",
         reference_dict=reference_dict_path
     log:
-        std="%s/{sample_id}.merge_splited_gvcf.log" % log_dir,
-        cluster_log="%s/{sample_id}.merge_splited_gvcf.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.merge_splited_gvcf.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}.merge_splited_gvcf.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.merge_splited_gvcf.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.merge_splited_gvcf.cluster.err"
     benchmark:
-        "%s/{sample_id}/merge_splited_gvcf.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/merge_splited_gvcf.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -59,13 +59,13 @@ rule index_merged_gvcf:
     input:
         rules.merge_splited_gvcf.output
     output:
-        "%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir
+        snpcall_dir_path / "{sample_id}/{sample_id}.gvcf.idx"
     log:
-        std="%s/{sample_id}.index_merged_gvcf.log" % log_dir,
-        cluster_log="%s/{sample_id}.index_merged_gvcf.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.index_merged_gvcf.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}.index_merged_gvcf.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.index_merged_gvcf.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.index_merged_gvcf.cluster.err"
     benchmark:
-        "%s/{sample_id}/index_merged_gvcf.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/index_merged_gvcf.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -78,32 +78,32 @@ rule index_merged_gvcf:
 
 rule create_sample_file:
     input:
-         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"])
+         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir_path, sample_id=config["sample_list"])
     output:
-        sample_file=joint_snpcall_dir / "sample_file.tsv"
+        sample_file=joint_snpcall_dir_path / "sample_file.tsv"
     run:
         with open(output.sample_file, "w") as out_fd:
             for sample in config["sample_list"]:
-                out_fd.write("{0}\t{1}/{0}/{0}.gvcf\n".format(sample, str(snpcall_dir)))
+                out_fd.write("{0}\t{1}/{0}/{0}.gvcf\n".format(sample, str(snpcall_dir_path)))
 
 rule genomicsdbimport:
     input:
-        gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir, sample_id=config["sample_list"]),
-        gvcf_indexes=expand("%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir, sample_id=config["sample_list"]),
+        gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir_path, sample_id=config["sample_list"]),
+        gvcf_indexes=expand("%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir_path, sample_id=config["sample_list"]),
         sample_file=rules.create_sample_file.output,
         interval_file=rules.prepare_genotyping_whitelist_intervals.output
     output:
-        directory(joint_snpcall_dir / "gvcf_database/callset.json")
+        directory(joint_snpcall_dir_path / "gvcf_database/callset.json")
     params:
         batch_size=50,
         reader_threads=config["genomicsdbimport_reader_threads"],
         interval_threads=config["genomicsdbimport_interval_threads"],
     log:
-        std="%s/genomicsdbimport.log" % log_dir,
-        cluster_log="%s/genomicsdbimport.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/genomicsdbimport.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "genomicsdbimport.log",
+        cluster_log=cluster_log_dir_path / "genomicsdbimport.cluster.log",
+        cluster_err=cluster_log_dir_path / "genomicsdbimport.cluster.err"
     benchmark:
-        "%s/genomicsdbimport.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "/genomicsdbimport.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -124,13 +124,13 @@ rule genotypegvcfs:
         database=rules.genomicsdbimport.output,
         reference=reference_path
     output:
-        joint_snpcall_dir / "all_samples.vcf.gz"
+        joint_snpcall_dir_path / "all_samples.vcf.gz"
     log:
-        std="%s/genotypegvcfs.log" % log_dir,
-        cluster_log="%s/ggenotypegvcfs.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/genotypegvcfs.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "genotypegvcfs.log",
+        cluster_log=cluster_log_dir_path / "genotypegvcfs.cluster.log",
+        cluster_err=cluster_log_dir_path / "genotypegvcfs.cluster.err"
     benchmark:
-        "%s/genotypegvcfs.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "genotypegvcfs.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

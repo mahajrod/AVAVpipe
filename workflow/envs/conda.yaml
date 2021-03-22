@@ -8,11 +8,11 @@ dependencies:
   - fastqc>=0.11
   - trimmomatic>=0.39
   - jellyfish=2.2.3
-  - bwa>=0.7.17
+  - bwa=0.7.17
   - samtools>=1.10
   - mosdepth>=0.3.1
-  - gatk4>=4.2.0.0
-  - picard>=2.18
+  - gatk4=4.2.0.0
+  - picard=2.18
   - numpy>=1.10
   - pandas>=1.2
   - matplotlib

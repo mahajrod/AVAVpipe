@@ -3,16 +3,17 @@ rule excess_filter:
     input:
         vcf=rules.genotypegvcfs.output
     output:
-        joint_snpcall_dir / "all_samples.excesshet.vcf.gz"
+        vcf=temp(joint_snpcall_dir_path / "all_samples.excesshet.vcf.gz"),
+        idx=temp(joint_snpcall_dir_path / "all_samples.excesshet.vcf.gz.tbi"),
     params:
         filter="'ExcessHet > 54.69'",
         filter_name="ExcessHet"
     log:
-        std="%s/excess_filter.log" % log_dir,
-        cluster_log="%s/excess_filter.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/excess_filter.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "excess_filter.log",
+        cluster_log=cluster_log_dir_path/ "excess_filter.cluster.log",
+        cluster_err=cluster_log_dir_path / "excess_filter.cluster.err"
     benchmark:
-        "%s/excess_filter.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "excess_filter.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -23,19 +24,20 @@ rule excess_filter:
     shell:
         " gatk --java-options '-Xmx{resources.mem}m' VariantFiltration -V {input.vcf} "
         " --filter-expression {params.filter} --filter-name {params.filter_name}"
-        " -O {output}> {log.std} 2>&1"
+        " -O {output.vcf}> {log.std} 2>&1"
 
 rule extract_sites:
     input:
-        vcf=rules.excess_filter.output
+        vcf=rules.excess_filter.output.vcf
     output:
-        joint_snpcall_dir / "all_samples.excesshet.sites_only.vcf.gz"
+        vcf=temp(joint_snpcall_dir_path / "all_samples.excesshet.sites_only.vcf.gz"),
+        idx=temp(joint_snpcall_dir_path / "all_samples.excesshet.sites_only.vcf.gz.tbi")
     log:
-        std="%s/extract_sites.log" % log_dir,
-        cluster_log="%s/extract_sites.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/extract_sites.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "extract_sites.log",
+        cluster_log=cluster_log_dir_path / "extract_sites.cluster.log",
+        cluster_err=cluster_log_dir_path / "extract_sites.cluster.err"
     benchmark:
-        "%s/extract_sites.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "extract_sites.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -45,14 +47,14 @@ rule extract_sites:
     threads: config["extract_sites_threads"]
     shell:
         " gatk --java-options '-Xmx{resources.mem}m' MakeSitesOnlyVcf -I {input.vcf} "
-        " -O {output}> {log.std} 2>&1"
+        " -O {output.vcf}> {log.std} 2>&1"
 
 rule variantrecalibrator_indel:
     input:
-        vcf=rules.extract_sites.output
+        vcf=rules.extract_sites.output.vcf
     output:
-        tranches=joint_snpcall_dir / "all_samples.indel.tranches",
-        recal_table=joint_snpcall_dir / "all_samples.indel.recal.table",
+        tranches=joint_snpcall_dir_path / "all_samples.indel.tranches",
+        recal_table=joint_snpcall_dir_path / "all_samples.indel.recal.table",
     params:
         mode="INDEL",
         max_gaussians=4,
@@ -65,11 +67,11 @@ rule variantrecalibrator_indel:
         dbsnp="dbsnp,known=true,training=false,truth=false,prior=2",
         dbsnp_path=known_variants_dbsnp_path
     log:
-        std="%s/variantrecalibrator_indel.log" % log_dir,
-        cluster_log="%s/variantrecalibrator_indel.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/variantrecalibrator_indel.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "variantrecalibrator_indel.log",
+        cluster_log=cluster_log_dir_path / "variantrecalibrator_indel.cluster.log",
+        cluster_err=cluster_log_dir_path / "variantrecalibrator_indel.cluster.err"
     benchmark:
-        "%s/variantrecalibrator_indel.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "variantrecalibrator_indel.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -90,8 +92,8 @@ rule variantrecalibrator_snp:
     input:
         vcf=rules.extract_sites.output
     output:
-        tranches=joint_snpcall_dir / "all_samples.snp.tranches",
-        recal_table=joint_snpcall_dir / "all_samples.snp.recal.table",
+        tranches=joint_snpcall_dir_path / "all_samples.snp.tranches",
+        recal_table=joint_snpcall_dir_path / "all_samples.snp.recal.table",
     params:
         mode="SNP",
         max_gaussians=6,
@@ -106,11 +108,11 @@ rule variantrecalibrator_snp:
         dbsnp="dbsnp,known=true,training=false,truth=false,prior=2",
         dbsnp_path=known_variants_dbsnp_path
     log:
-        std="%s/variantrecalibrator_snp.log" % log_dir,
-        cluster_log="%s/variantrecalibrator_snp.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/variantrecalibrator_snp.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "variantrecalibrator_snp.log",
+        cluster_log=cluster_log_dir_path / "variantrecalibrator_snp.cluster.log",
+        cluster_err=cluster_log_dir_path / "variantrecalibrator_snp.cluster.err"
     benchmark:
-        "%s/variantrecalibrator_snp.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "variantrecalibrator_snp.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -134,17 +136,18 @@ rule applyvsqr_indel:
         recal_table=rules.variantrecalibrator_indel.output.recal_table,
         vcf=rules.excess_filter.output
     output:
-        temp(joint_snpcall_dir / "all_samples.indel.recalibrated.vcf.gz")
+        vcf=temp(joint_snpcall_dir_path / "all_samples.indel.recalibrated.vcf.gz"),
+        idx=temp(joint_snpcall_dir_path / "all_samples.indel.recalibrated.vcf.gz.tbi")
     params:
         mode="INDEL",
         truth_sensitivity_filter_level=99.7,
         create_output_variant_index="true"
     log:
-        std="%s/applyvsqr_indel.log" % log_dir,
-        cluster_log="%s/applyvsqr_indel.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/applyvsqr_indel.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "applyvsqr_indel.log",
+        cluster_log=cluster_log_dir_path / "applyvsqr_indel.cluster.log",
+        cluster_err=cluster_log_dir_path / "applyvsqr_indel.cluster.err"
     benchmark:
-        "%s/applyvsqr_indel.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "applyvsqr_indel.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -157,25 +160,25 @@ rule applyvsqr_indel:
         " -V {input.vcf} --recal-file {input.recal_table} --tranches-file {input.tranches}"
         " --truth-sensitivity-filter-level {params.truth_sensitivity_filter_level} "
         " --create-output-variant-index {params.create_output_variant_index}"
-        " -mode {params.mode} -O {output} > {log.std} 2>&1"
+        " -mode {params.mode} -O {output.vcf} > {log.std} 2>&1"
 
 rule applyvsqr_snp:
     input:
         tranches=rules.variantrecalibrator_snp.output.tranches,
         recal_table=rules.variantrecalibrator_snp.output.recal_table,
-        vcf=rules.applyvsqr_indel.output
+        vcf=rules.applyvsqr_indel.output.vcf
     output:
-        joint_snpcall_dir / "all_samples.recalibrated.vcf.gz"
+        joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz"
     params:
         mode="SNP",
         truth_sensitivity_filter_level=99.7,
         create_output_variant_index="true"
     log:
-        std="%s/applyvsqr_snp.log" % log_dir,
-        cluster_log="%s/applyvsqr_snp.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/applyvsqr_snp.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "applyvsqr_snp.log",
+        cluster_log=cluster_log_dir_path / "applyvsqr_snp.cluster.log",
+        cluster_err=cluster_log_dir_path / "applyvsqr_snp.cluster.err"
     benchmark:
-        "%s/applyvsqr_snp.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "applyvsqr_snp.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

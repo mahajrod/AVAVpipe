@@ -1,17 +1,17 @@
 rule fastqc_raw:
     input:
-        "%s/{sample_id}/{sample_id}_1.fastq.gz" % (config["sample_dir"]),
-        "%s/{sample_id}/{sample_id}_2.fastq.gz" % (config["sample_dir"])
+        sample_dir_path / "{sample_id}/{sample_id}_1.fastq.gz",
+        sample_dir_path / "{sample_id}/{sample_id}_2.fastq.gz"
     output:
-        directory("%s/{sample_id}/raw/" % fastqc_dir)
+        directory(fastqc_dir_path / "{sample_id}/raw/")
     params:
         kmer=7
     log:
-        std="%s/{sample_id}/fastqc_raw.log" % log_dir,
-        cluster_log="%s/{sample_id}.fastqc_raw.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.fastqc_raw.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/fastqc_raw.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.fastqc_raw.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.fastqc_raw.cluster.err"
     benchmark:
-        "%s/{sample_id}/fastqc_raw.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/fastqc_raw.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

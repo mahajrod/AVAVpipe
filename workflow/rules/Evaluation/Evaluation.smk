@@ -4,15 +4,15 @@ rule variantcalling_metrics:
         dbsnp=known_variants_dbsnp_path,
         reference_dict=reference_dict_path
     output:
-        log_dir /"variantcalling_metrics.log"
+        log_dir_path /"variantcalling_metrics.log"
     params:
-        output_prefix=joint_snpcall_dir / "all_samples.recalibrated.metrics"
+        output_prefix=joint_snpcall_dir_path / "all_samples.recalibrated.metrics"
     log:
-        std="%s/variantcalling_metrics.log" % log_dir,
-        cluster_log="%s/variantcalling_metrics.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/variantcalling_metrics_.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "variantcalling_metrics.log",
+        cluster_log=cluster_log_dir_path / "variantcalling_metrics.cluster.log",
+        cluster_err=cluster_log_dir_path / "variantcalling_metrics_.cluster.err"
     benchmark:
-        "%s/variantcalling_metrics.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "variantcalling_metrics.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -31,15 +31,15 @@ rule varianteval:
         dbsnp=known_variants_dbsnp_path,
         reference_=reference_path
     output:
-        joint_snpcall_dir / "all_samples.recalibrated.varianteval"
+        joint_snpcall_dir_path / "all_samples.recalibrated.varianteval"
     params:
         metrics=" -noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary "
     log:
-        std="%s/varianteval_metrics.log" % log_dir,
-        cluster_log="%s/varianteval_metrics.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/varianteval_metrics.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "varianteval_metrics.log",
+        cluster_log=cluster_log_dir_path / "varianteval_metrics.cluster.log",
+        cluster_err=cluster_log_dir_path / "varianteval_metrics.cluster.err"
     benchmark:
-        "%s/varianteval_metrics.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "varianteval_metrics.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:

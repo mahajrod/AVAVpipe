@@ -1,12 +1,12 @@
 rule trimmomatic:
     input:
-        "%s/{sample_id}/{sample_id}_1.fastq.gz" % (config["sample_dir"]),
-        "%s/{sample_id}/{sample_id}_2.fastq.gz" % (config["sample_dir"])
+        sample_dir_path / "{sample_id}/{sample_id}_1.fastq.gz",
+        sample_dir_path / "{sample_id}/{sample_id}_2.fastq.gz"
     output:
-        pe_forward="%s/{sample_id}/{sample_id}.trimmed_1.fastq.gz" % filtered_read_dir,
-        se_forward="%s/{sample_id}/{sample_id}.trimmed_1.se.fastq.gz" % filtered_read_dir,
-        pe_reverse="%s/{sample_id}/{sample_id}.trimmed_2.fastq.gz" % filtered_read_dir,
-        se_reverse="%s/{sample_id}/{sample_id}.trimmed_2.se.fastq.gz" % filtered_read_dir,
+        pe_forward=filtered_read_dir_path / "{sample_id}/{sample_id}.trimmed_1.fastq.gz",
+        se_forward=filtered_read_dir_path / "{sample_id}/{sample_id}.trimmed_1.se.fastq.gz",
+        pe_reverse=filtered_read_dir_path / "{sample_id}/{sample_id}.trimmed_2.fastq.gz",
+        se_reverse=filtered_read_dir_path / "{sample_id}/{sample_id}.trimmed_2.se.fastq.gz"
     params:
         adapters=config["trimmomatic_adapters"],
         illumina_clip="2:30:10:1",
@@ -14,11 +14,11 @@ rule trimmomatic:
         window_quality=20,
         minlength=50
     log:
-        std="%s/{sample_id}/trimmomatic.log" % log_dir,
-        cluster_log="%s/{sample_id}.trimmomatic.cluster.log" % config["cluster_log_dir"],
-        cluster_err="%s/{sample_id}.trimmomatic.cluster.err" % config["cluster_log_dir"]
+        std=log_dir_path / "{sample_id}/trimmomatic.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.trimmomatic.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.trimmomatic.cluster.err"
     benchmark:
-        "%s/{sample_id}/trimmomatic.benchmark.txt" % benchmark_dir
+        benchmark_dir_path / "{sample_id}/trimmomatic.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
