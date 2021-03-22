@@ -1,6 +1,6 @@
 rule baserecalibrator:
     input:
-        region=reference_region_dir_path / "intervals/region_{region_id}.list",
+        region=reference_recalibration_region_dir_path / "intervals/region_{region_id}.list",
         bam=rules.bwa_map.output.bam,
         bai=rules.index_bam.output,
         reference=config["reference"],
@@ -27,7 +27,7 @@ rule baserecalibrator:
 rule gatherbsqrreports:
     input:
         lambda wildcards:  expand(alignment_dir_path / "{sample_id}/baserecalibrator/{sample_id}.region_{region_id}.sorted.mkdup.recal.table",
-                                  region_id=glob_wildcards(reference_region_dir_path / "/intervals/region_{region_id}.list")[0],
+                                  region_id=glob_wildcards(reference_recalibration_region_dir_path / "/intervals/region_{region_id}.list")[0],
                                   sample_id=[wildcards.sample_id])
     output:
         alignment_dir_path / "{sample_id}/{sample_id}.sorted.mkdup.recal.table"

@@ -73,13 +73,13 @@ rule prepare_recalibration_regions:
          blacklist=reference_blacklist_path,
          whitelist=reference_whitelist_path
     output:
-         reference_region_correspondence_path
+         reference_recalibration_region_correspondence_path
     params:
         max_region_length=config["split_regions_max_region_length"],
         max_seq_number=config["split_regions_max_seq_number"],
         region_file_format=config["split_regions_region_file_format"],
         min_scaffold_length=config["split_regions_min_scaffold_length"],
-        output_dir=reference_region_dir_path
+        output_dir=reference_recalibration_region_dir_path
     log:
         std=log_dir_path / "prepare_recalibration_regions.log",
         cluster_log=cluster_log_dir_path / "prepare_recalibration_regions.cluster.log",

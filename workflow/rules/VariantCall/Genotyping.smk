@@ -3,7 +3,7 @@ localrules: create_sample_file
 
 rule haplotypecaller_gvcf:
     input:
-        region=reference_region_dir_path / "intervals/region_{region_id}.list",
+        region=reference_recalibration_region_dir_path / "intervals/region_{region_id}.list",
         bam=rules.applybsqr.output.bam,
         bai=rules.applybsqr.output.bai,
         reference=config["reference"],
@@ -30,7 +30,7 @@ rule haplotypecaller_gvcf:
 rule merge_splited_gvcf:
     input:
         lambda wildcards:  expand(snpcall_dir_path / "{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf",
-                                  region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
+                                  region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_recalibration_region_dir_path)[0],
                                   sample_id=[wildcards.sample_id])
     output:
         snpcall_dir_path / "{sample_id}/{sample_id}.gvcf"

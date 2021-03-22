@@ -19,6 +19,7 @@ filtered_read_dir_path = out_dir_path / config["filtered_read_dir"]
 alignment_dir_path = out_dir_path / config["alignment_dir"]
 snpcall_dir_path = out_dir_path / config["snpcall_dir"]
 joint_snpcall_dir_path = out_dir_path / config["joint_snpcall_dir"]
+joint_snpcall_per_sample_dir_path = joint_snpcall_dir_path / "per_sample"
 log_dir_path = out_dir_path / config["log_dir"]
 error_dir_path  = out_dir_path / config["error_dir"]
 benchmark_dir_path =  out_dir_path / config["benchmark_dir"]
@@ -44,8 +45,8 @@ reference_whitelist_path = reference_dir_path / (reference_path.stem + ".whiteli
 reference_genotyping_whitelist_path = reference_dir_path / (reference_path.stem + ".genotyping.whitelist")
 reference_genotyping_whitelist_intervals_path = reference_dir_path / (reference_path.stem + ".genotyping.whitelist.intervals")
 
-reference_region_dir_path = reference_dir_path / "recalibration_regions"
-reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_region.correspondence"
+reference_recalibration_region_dir_path = reference_dir_path / "recalibration_regions"
+reference_recalibration_region_correspondence_path = reference_recalibration_region_dir_path / "scaffold_to_region.correspondence"
 
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
@@ -57,7 +58,7 @@ rule all:
     input:
         reference_fai_path,
         reference_dict_path,
-        reference_region_correspondence_path,
+        reference_recalibration_region_correspondence_path,
         reference_genotyping_whitelist_intervals_path,
         expand(log_dir_path / "{sample_id}/fastqc_raw.log", sample_id=config["sample_list"]),
         expand(log_dir_path / "{sample_id}/fastqc_filtered.log", sample_id=config["sample_list"]),
@@ -70,6 +71,7 @@ rule all:
         expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir_path / "gvcf_database/callset.json"),
         joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz",
+        expand(joint_snpcall_per_sample_dir_path/ "{sample_id}.recalibrated.good.vcf.gz", sample_id=config["sample_list"])
         joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_summary_metrics",
         #joint_snpcall_dir_path / "all_samples.recalibrated.good.varianteval",
 

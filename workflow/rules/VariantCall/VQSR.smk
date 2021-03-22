@@ -218,3 +218,29 @@ rule select_good_variants:
         " gatk --java-options '-Xmx{resources.mem}m' SelectVariants "
         " -V {input.vcf} -R {input.reference} --exclude-filtered"
         " -O {output.vcf} > {log.std} 2>&1"
+
+rule select_per_sample_variants:
+    input:
+        vcf=rules.select_good_variants.output.vcf,
+        reference=reference_path
+    output:
+        vcf=joint_snpcall_per_sample_dir_path/ "{sample_id}.recalibrated.good.vcf.gz",
+        idx=joint_snpcall_per_sample_dir_path / "{sample_id}.recalibrated.good.vcf.gz.tbi"
+    log:
+        std=log_dir_path / "{sample_id}.select_good_variants.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.select_good_variants.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.select_good_variants.cluster.err"
+    benchmark:
+        benchmark_dir_path / "{sample_id}.select_good_variants.benchmark.txt"
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["select_per_sample_variants_threads"],
+        time=config["select_per_sample_variants_time"],
+        mem=config["select_per_sample_variants_mem_mb"],
+    threads: config["select_per_sample_variants_threads"]
+    shell:
+        " gatk --java-options '-Xmx{resources.mem}m' SelectVariants "
+        " -V {input.vcf} -R {input.reference} --sample-name {wildcards.sample_id}"
+        " -O {output.vcf} > {log.std} 2>&1"
+
