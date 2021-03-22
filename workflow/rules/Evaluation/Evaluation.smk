@@ -32,8 +32,8 @@ rule varianteval:
         reference_=reference_path
     output:
         joint_snpcall_dir_path / "all_samples.recalibrated.varianteval"
-    params:
-        metrics=" -noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary "
+    #params:
+    #    metrics=" -noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary "
     log:
         std=log_dir_path / "varianteval_metrics.log",
         cluster_log=cluster_log_dir_path / "varianteval_metrics.cluster.log",
@@ -49,5 +49,5 @@ rule varianteval:
     threads: config["varianteval_metrics_threads"]
     shell:
         " gatk --java-options '-Xmx{resources.mem}m' VariantEval"
-        " -R {input.reference_} --eval {input.vcf} -D {input.dbsnp}  {params.metrics}"
+        " -R {input.reference_} --eval {input.vcf} -D {input.dbsnp} " #  {params.metrics}"
         " -O {output} > {log.std} 2>&1"

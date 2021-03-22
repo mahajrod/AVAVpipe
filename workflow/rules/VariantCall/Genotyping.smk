@@ -29,7 +29,7 @@ rule haplotypecaller_gvcf:
 
 rule merge_splited_gvcf:
     input:
-        lambda wildcards:  expand("%s/{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf" % snpcall_dir_path,
+        lambda wildcards:  expand(snpcall_dir_path / "{sample_id}/haplotypecaller_gvcf/{sample_id}.region_{region_id}.gvcf",
                                   region_id=glob_wildcards("%s/intervals/region_{region_id}.list" % reference_region_dir_path)[0],
                                   sample_id=[wildcards.sample_id])
     output:
@@ -78,7 +78,7 @@ rule index_merged_gvcf:
 
 rule create_sample_file:
     input:
-         expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir_path, sample_id=config["sample_list"])
+         expand(snpcall_dir_path /"{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"])
     output:
         sample_file=joint_snpcall_dir_path / "sample_file.tsv"
     run:
@@ -88,8 +88,8 @@ rule create_sample_file:
 
 rule genomicsdbimport:
     input:
-        gvcfs=expand("%s/{sample_id}/{sample_id}.gvcf" % snpcall_dir_path, sample_id=config["sample_list"]),
-        gvcf_indexes=expand("%s/{sample_id}/{sample_id}.gvcf.idx" % snpcall_dir_path, sample_id=config["sample_list"]),
+        gvcfs=expand(snpcall_dir_path/ "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"]),
+        gvcf_indexes=expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf.idx", sample_id=config["sample_list"]),
         sample_file=rules.create_sample_file.output,
         interval_file=rules.prepare_genotyping_whitelist_intervals.output
     output:
