@@ -80,7 +80,7 @@ include: "workflow/rules/Preprocessing/Reference.smk"
 include: "workflow/rules/QCFiltering/FastQC_raw.smk"
 include: "workflow/rules/QCFiltering/Trimmomatic.smk"
 include: "workflow/rules/QCFiltering/FastQC_filtered.smk"
-include: "workflow/rules/QCFiltering/Kmer.smk"  # not tested
+include: "workflow/rules/QCFiltering/Kmer.smk"
 include: "workflow/rules/Alignment/Alignment.smk"
 include: "workflow/rules/Alignment/Coverage.smk"
 include: "workflow/rules/VariantCall/BQSR.smk"
