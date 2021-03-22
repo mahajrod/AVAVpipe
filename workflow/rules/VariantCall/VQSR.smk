@@ -227,11 +227,11 @@ rule select_per_sample_variants:
         vcf=joint_snpcall_per_sample_dir_path/ "{sample_id}.recalibrated.good.vcf.gz",
         idx=joint_snpcall_per_sample_dir_path / "{sample_id}.recalibrated.good.vcf.gz.tbi"
     log:
-        std=log_dir_path / "{sample_id}.select_good_variants.log",
-        cluster_log=cluster_log_dir_path / "{sample_id}.select_good_variants.cluster.log",
-        cluster_err=cluster_log_dir_path / "{sample_id}.select_good_variants.cluster.err"
+        std=log_dir_path / "{sample_id}.select_per_sample_variants.log",
+        cluster_log=cluster_log_dir_path / "{sample_id}.select_per_sample_variants.cluster.log",
+        cluster_err=cluster_log_dir_path / "{sample_id}.select_per_sample_variants.cluster.err"
     benchmark:
-        benchmark_dir_path / "{sample_id}.select_good_variants.benchmark.txt"
+        benchmark_dir_path / "{sample_id}.select_per_sample_variants.benchmark.txt"
     conda:
         "../../%s" % config["conda_config"]
     resources:
@@ -242,5 +242,6 @@ rule select_per_sample_variants:
     shell:
         " gatk --java-options '-Xmx{resources.mem}m' SelectVariants "
         " -V {input.vcf} -R {input.reference} --sample-name {wildcards.sample_id}"
+        " --exclude-non-variants"
         " -O {output.vcf} > {log.std} 2>&1"
 
