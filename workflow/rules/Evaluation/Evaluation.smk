@@ -1,13 +1,13 @@
 rule variantcalling_metrics:
     input:
-        vcf=rules.applyvsqr_snp.output,
+        vcf=rules.select_good_variants.output.vcf
         dbsnp=known_variants_dbsnp_path,
         reference_dict=reference_dict_path
     output:
-        summary=joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_summary_metrics",
-        detailed=joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_detail_metrics"
+        summary=joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_summary_metrics",
+        detailed=joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_detail_metrics"
     params:
-        output_prefix=joint_snpcall_dir_path / "all_samples.recalibrated"
+        output_prefix=joint_snpcall_dir_path / "all_samples.recalibrated.good"
     log:
         std=log_dir_path / "variantcalling_metrics.log",
         cluster_log=cluster_log_dir_path / "variantcalling_metrics.cluster.log",
@@ -29,11 +29,11 @@ rule variantcalling_metrics:
 """
 rule varianteval:
     input:
-        vcf=rules.applyvsqr_snp.output,
+        vcf=rules.select_good_variants.output.vcf,
         dbsnp=known_variants_dbsnp_path,
         reference_=reference_path
     output:
-        joint_snpcall_dir_path / "all_samples.recalibrated.varianteval"
+        joint_snpcall_dir_path / "all_samples.recalibrated.varianteval.good"
     #params:
     #    metrics=" -noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary "
     log:

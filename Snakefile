@@ -71,8 +71,8 @@ rule all:
         expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir_path / "gvcf_database/callset.json"),
         joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz",
-        joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_summary_metrics",
-        #joint_snpcall_dir_path / "all_samples.recalibrated.varianteval",
+        joint_snpcall_dir_path / "all_samples.recalibrated.good.variant_calling_summary_metrics",
+        #joint_snpcall_dir_path / "all_samples.recalibrated.good.varianteval",
 
 
 include: "workflow/rules/Preprocessing/Reference.smk"
