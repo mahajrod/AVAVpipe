@@ -168,7 +168,8 @@ rule applyvsqr_snp:
         recal_table=rules.variantrecalibrator_snp.output.recal_table,
         vcf=rules.applyvsqr_indel.output.vcf
     output:
-        joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz"
+        vcf=joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz",
+        idx=joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz.tbi"
     params:
         mode="SNP",
         truth_sensitivity_filter_level=99.7,
@@ -191,4 +192,29 @@ rule applyvsqr_snp:
         " -V {input.vcf} --recal-file {input.recal_table} --tranches-file {input.tranches}"
         " --truth-sensitivity-filter-level {params.truth_sensitivity_filter_level} "
         " --create-output-variant-index {params.create_output_variant_index}"
-        " -mode {params.mode} -O {output} > {log.std} 2>&1"
+        " -mode {params.mode} -O {output.vcf} > {log.std} 2>&1"
+
+rule select_good_variants:
+    input:
+        vcf=rules.applyvsqr_snp.output.vcf,
+        reference=reference_path
+    output:
+        vcf=joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz",
+        idx=joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz.tbi"
+    log:
+        std=log_dir_path / "select_good_variants.log",
+        cluster_log=cluster_log_dir_path / "select_good_variants.cluster.log",
+        cluster_err=cluster_log_dir_path / "select_good_variants.cluster.err"
+    benchmark:
+        benchmark_dir_path / "select_good_variants.benchmark.txt"
+    conda:
+        "../../%s" % config["conda_config"]
+    resources:
+        cpus=config["select_good_variants_threads"],
+        time=config["select_good_variants_time"],
+        mem=config["select_good_variants_mem_mb"],
+    threads: config["select_good_variants_threads"]
+    shell:
+        " gatk --java-options '-Xmx{resources.mem}m' SelectVariants "
+        " -V {input.vcf} -R {input.reference} --exclude-filtered"
+        " -O {output.vcf} > {log.std} 2>&1"

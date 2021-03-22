@@ -47,6 +47,7 @@ reference_genotyping_whitelist_intervals_path = reference_dir_path / (reference_
 reference_region_dir_path = reference_dir_path / "recalibration_regions"
 reference_region_correspondence_path = reference_region_dir_path / "scaffold_to_region.correspondence"
 
+
 # if "sample_list" key is absent in config variable, use folder names from config["sample_dir"] as sample ids
 if "sample_list" not in config:
     config["sample_list"] = [d.name for d in sample_dir_path.iterdir() if d.is_dir()]
@@ -69,9 +70,9 @@ rule all:
         #expand("%s/{sample_id}/{sample_id}.sorted.mkdup.recalibrated.bam" %  alignment_dir, sample_id=config["sample_list"] ),
         expand(snpcall_dir_path / "{sample_id}/{sample_id}.gvcf", sample_id=config["sample_list"] ),
         directory(joint_snpcall_dir_path / "gvcf_database/callset.json"),
-        joint_snpcall_dir_path / "all_samples.recalibrated.vcf.gz",
-        log_dir_path /"variantcalling_metrics.log",
-        joint_snpcall_dir_path / "all_samples.recalibrated.varianteval",
+        joint_snpcall_dir_path / "all_samples.recalibrated.good.vcf.gz",
+        joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_summary_metrics",
+        #joint_snpcall_dir_path / "all_samples.recalibrated.varianteval",
 
 
 include: "workflow/rules/Preprocessing/Reference.smk"

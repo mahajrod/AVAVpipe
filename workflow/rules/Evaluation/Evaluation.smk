@@ -4,9 +4,10 @@ rule variantcalling_metrics:
         dbsnp=known_variants_dbsnp_path,
         reference_dict=reference_dict_path
     output:
-        log_dir_path /"variantcalling_metrics.log"
+        summary=joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_summary_metrics",
+        detailed=joint_snpcall_dir_path / "all_samples.recalibrated.variant_calling_detail_metrics"
     params:
-        output_prefix=joint_snpcall_dir_path / "all_samples.recalibrated.metrics"
+        output_prefix=joint_snpcall_dir_path / "all_samples.recalibrated"
     log:
         std=log_dir_path / "variantcalling_metrics.log",
         cluster_log=cluster_log_dir_path / "variantcalling_metrics.cluster.log",
@@ -25,6 +26,7 @@ rule variantcalling_metrics:
         " -I {input.vcf} --DBSNP {input.dbsnp} -SD {input.reference_dict}"
         " -O {params.output_prefix} > {log.std} 2>&1"
 
+"""
 rule varianteval:
     input:
         vcf=rules.applyvsqr_snp.output,
@@ -51,3 +53,4 @@ rule varianteval:
         " gatk --java-options '-Xmx{resources.mem}m' VariantEval"
         " -R {input.reference_} --eval {input.vcf} -D {input.dbsnp} " #  {params.metrics}"
         " -O {output} > {log.std} 2>&1"
+"""
