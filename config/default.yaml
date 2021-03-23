@@ -11,7 +11,7 @@ log_dir: "logs"
 cluster_log_dir: "cluster_logs"
 error_dir: "errors"
 benchmark_dir: "benchmarks"
-conda_config: "envs/conda.yaml"
+conda_config: "workflow/envs/conda.yaml"
 known_variants_dir: "resources/known_variants"
 #---- Vcfs with known variants ----
 mills_vcf: "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
