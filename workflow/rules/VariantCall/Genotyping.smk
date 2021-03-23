@@ -16,7 +16,7 @@ rule haplotypecaller_gvcf:
     benchmark:
         benchmark_dir_path / "{sample_id}/haplotypecaller_gvcf/haplotypecaller_gvcf.region_{region_id}.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["haplotypecaller_threads"],
         time=config["haplotypecaller_time"],
@@ -45,7 +45,7 @@ rule merge_splited_gvcf:
     benchmark:
         benchmark_dir_path / "{sample_id}/merge_splited_gvcf.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["merge_splited_gvcf_threads"],
         time=config["merge_splited_gvcf_time"],
@@ -67,7 +67,7 @@ rule index_merged_gvcf:
     benchmark:
         benchmark_dir_path / "{sample_id}/index_merged_gvcf.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["index_merged_gvcf_threads"],
         time=config["index_merged_gvcf_time"],
@@ -105,7 +105,7 @@ rule genomicsdbimport:
     benchmark:
         benchmark_dir_path / "/genomicsdbimport.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["genomicsdbimport_reader_threads"] + config["genomicsdbimport_interval_threads"],
         time=config["genomicsdbimport_time"],
@@ -132,7 +132,7 @@ rule genotypegvcfs:
     benchmark:
         benchmark_dir_path / "genotypegvcfs.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["genotypegvcfs_threads"],
         time=config["genotypegvcfs_time"],

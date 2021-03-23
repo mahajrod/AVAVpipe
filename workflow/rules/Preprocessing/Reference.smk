@@ -12,7 +12,7 @@ rule ref_faidx:
     benchmark:
         benchmark_dir_path / "faidx.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["faidx_threads"],
         time=config["faidx_time"],
@@ -34,7 +34,7 @@ rule ref_dict:
     benchmark:
         benchmark_dir_path / "dict.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["dict_threads"],
         time=config["dict_time"],
@@ -57,7 +57,7 @@ rule prepare_genotyping_whitelist_intervals:
     benchmark:
         benchmark_dir_path / "prepare_genotyping_whitelist_intervals.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["prepare_genotyping_whitelist_intervals_threads"],
         time=config["prepare_genotyping_whitelist_intervals_time"],
@@ -87,7 +87,7 @@ rule prepare_recalibration_regions:
     benchmark:
         benchmark_dir_path / "prepare_recalibration_regions.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["prepare_recalibration_regions_threads"],
         time=config["prepare_recalibration_regions_time"],

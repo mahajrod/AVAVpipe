@@ -12,7 +12,7 @@ rule fastqc_filtered:
     benchmark:
         benchmark_dir_path / "{sample_id}/fastqc_filtered.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["fastqc_threads"],
         time=config["fastqc_time"],

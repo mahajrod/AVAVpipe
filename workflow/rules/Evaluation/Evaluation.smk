@@ -15,7 +15,7 @@ rule variantcalling_metrics:
     benchmark:
         benchmark_dir_path / "variantcalling_metrics.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["variantcalling_metrics_threads"],
         time=config["variantcalling_metrics_time"],
@@ -43,7 +43,7 @@ rule varianteval:
     benchmark:
         benchmark_dir_path / "varianteval_metrics.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["varianteval_metrics_threads"],
         time=config["varianteval_metrics_time"],

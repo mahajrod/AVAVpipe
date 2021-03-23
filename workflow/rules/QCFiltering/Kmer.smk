@@ -13,7 +13,7 @@ rule jellyfish_count:
     benchmark:
         benchmark_dir_path / "{sample_id}/jellyfish_count.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["jellyfish_count_threads"],
         time=config["jellyfish_count_time"],
@@ -40,7 +40,7 @@ rule jellyfish_histo:
     benchmark:
         benchmark_dir_path / "{sample_id}/jellyfish_histo.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["jellyfish_histo_threads"],
         time=config["jellyfish_histo_time"],

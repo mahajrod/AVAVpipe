@@ -22,7 +22,7 @@ rule bwa_map:
     benchmark:
         benchmark_dir_path / "{sample_id}/alignment.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["bwa_threads"] + config["sort_threads"] + config["fixmate_threads"] + config["markdup_threads"] + 1,
         time=config["map_time"],
@@ -47,7 +47,7 @@ rule index_bam:
     benchmark:
         benchmark_dir_path / "{sample_id}/index.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["index_threads"],
         time=config["index_time"],

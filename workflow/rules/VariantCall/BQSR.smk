@@ -14,7 +14,7 @@ rule baserecalibrator:
     benchmark:
         benchmark_dir_path / "{sample_id}/baserecalibrator/baserecalibrator.region_{region_id}.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["baserecalibrator_threads"],
         time=config["baserecalibrator_time"],
@@ -41,7 +41,7 @@ rule gatherbsqrreports:
     benchmark:
         benchmark_dir_path / "{sample_id}/gatherbsqrreports.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["gatherbsqrreports_threads"],
         time=config["gatherbsqrreports_time"],
@@ -66,7 +66,7 @@ rule applybsqr:
     benchmark:
         benchmark_dir_path / "{sample_id}/applybsqr.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["applybsqr_threads"],
         time=config["applybsqr_time"],

@@ -15,7 +15,7 @@ rule excess_filter:
     benchmark:
         benchmark_dir_path / "excess_filter.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["excess_filter_threads"],
         time=config["excess_filter_time"],
@@ -39,7 +39,7 @@ rule extract_sites:
     benchmark:
         benchmark_dir_path / "extract_sites.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["extract_sites_threads"],
         time=config["extract_sites_time"],
@@ -73,7 +73,7 @@ rule variantrecalibrator_indel:
     benchmark:
         benchmark_dir_path / "variantrecalibrator_indel.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["variantrecalibrator_indel_threads"],
         time=config["variantrecalibrator_indel_time"],
@@ -114,7 +114,7 @@ rule variantrecalibrator_snp:
     benchmark:
         benchmark_dir_path / "variantrecalibrator_snp.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["variantrecalibrator_snp_threads"],
         time=config["variantrecalibrator_snp_time"],
@@ -149,7 +149,7 @@ rule applyvsqr_indel:
     benchmark:
         benchmark_dir_path / "applyvsqr_indel.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["applyvsqr_indel_threads"],
         time=config["applyvsqr_indel_time"],
@@ -181,7 +181,7 @@ rule applyvsqr_snp:
     benchmark:
         benchmark_dir_path / "applyvsqr_snp.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["applyvsqr_snp_threads"],
         time=config["applyvsqr_snp_time"],
@@ -208,7 +208,7 @@ rule select_good_variants:
     benchmark:
         benchmark_dir_path / "select_good_variants.benchmark.txt"
     conda:
-        "../../%s" % config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["select_good_variants_threads"],
         time=config["select_good_variants_time"],
