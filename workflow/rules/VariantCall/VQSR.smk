@@ -233,7 +233,7 @@ rule select_per_sample_variants:
     benchmark:
         benchmark_dir_path / "{sample_id}.select_per_sample_variants.benchmark.txt"
     conda:
-        config["conda_config"]
+        "../../../%s" % config["conda_config"]
     resources:
         cpus=config["select_per_sample_variants_threads"],
         time=config["select_per_sample_variants_time"],
