@@ -201,13 +201,13 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
                     else:
                         if region_file_format == 'simple':
                             if len(region) == 3:
-                                out_fd.write("%s\t%s\t%s\n" % (region[0], region[1], region[2]))
+                                out_fd.write("{0}\t{1}\t{2}\n".format(*region))
                             elif len(region) == 1:
                                 out_fd.write(region[0])
                                 out_fd.write("\n")
-                        elif region_file_format == 'GATK':
+                        elif (region_file_format == 'GATK') or (region_file_format == 'samtools'):
                             if len(region) == 3:
-                                out_fd.write("%s:%s-%s\n" % (region[0], region[1], region[2]))
+                                out_fd.write("{0}:{1}-{2}".format(*region))
                             elif len(region) == 1:
                                 out_fd.write(region[0])
                                 out_fd.write("\n")
@@ -220,10 +220,10 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
     else:
         if region_file_format == "samtools":
             for regions in region_list:
-                sys.stdout.write(",".join(["{0}:{1}-{2}".format(*region) for region in regions]) + "\n")
+                sys.stdout.write(",".join(["{0}:{1}-{2}".format(*region) if len(region) == 3 else region[0] for region in regions]) + "\n")
         elif region_file_format == "GATK":
             for regions in region_list:
-                sys.stdout.write(" -L " + " -L ".join(["{0}:{1}-{2}".format(*region) for region in regions]) + "\n")
+                sys.stdout.write(" -L " + " -L ".join(["{0}:{1}-{2}".format(*region) if len(region) == 3 else region[0]  for region in regions]) + "\n")
     return region_list, scaffold_to_region_correspondence_dict
 
 
