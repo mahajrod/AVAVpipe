@@ -213,7 +213,7 @@ def prepare_region_list_by_length(fai_file, max_length=500000, max_seq_number=10
                                 out_fd.write("\n")
                         elif region_file_format == 'samtools':
                             if len(region) == 3:
-                                out_fd.write("\t".join(region))
+                                out_fd.write("\t".join(map(str, region)))
                             elif len(region) == 1:
                                 out_fd.write(region[0])
                                 out_fd.write("\n")
